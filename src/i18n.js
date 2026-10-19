@@ -12,7 +12,7 @@ en: {
  back:'← All tools', choose:'Choose files', chooseOne:'Choose a PDF', drop:'or drag & drop here', privateNote:'Processed on your device – nothing is uploaded.',
  processing:'Working…', done:'Done!', download:'Download', error:'Something went wrong: ',
  needPdf:'Please choose a PDF file.', needTwo:'Choose at least 2 PDF files.', needImg:'Please choose at least one image.',
- convert:'Convert to Word', wordLimit:'Honest note: this extracts the text and basic structure (paragraphs, headings, pages). Complex layouts, tables, images and fonts are not preserved. Scanned PDFs (photos of pages) have no text to extract.',
+ convert:'Convert to Word', wordLimit:'Honest note: this keeps text, headings, font sizes, bold/italic, indentation, simple tables and embedded images where possible. Complex layouts (columns, floating boxes, exact fonts) are not reproduced exactly. Scanned PDFs (photos of pages) have no text to extract.',
  noText:'No selectable text was found. This looks like a scanned PDF, so there is nothing to extract (OCR is not supported yet).',
  merge:'Merge PDFs', moveUp:'Up', moveDown:'Down', remove:'Remove', pages:'pages',
  split:'Split PDF', ranges:'Page ranges', rangesHint:'e.g. 1-3, 5, 8-10 (each range becomes a file)', everyPage:'Every page as a separate file', badRange:'Invalid page range.',
@@ -25,9 +25,9 @@ en: {
  fname:'First name', lname:'Last name', phone:'Phone', email:'Email', org:'Company', title:'Job title', website:'Website',
  fg:'Color', bg:'Background', logo:'Logo (optional)', size:'Size', png:'Download PNG', svg:'Download SVG', clearLogo:'Remove logo',
  qrNote:'This is a static QR code: the content is stored in the image itself, so it works forever, with no account and no subscription. Always test-scan before printing.',
- proTitle:'No-Tricks Pro – one payment, forever', proSub:'All tools stay free. Pro is an optional one-time purchase to support the project. No subscription, no auto-renewal.',
- pro1:'No ads', pro2:'Batch processing (many files at once)', pro3:'Higher limits for very large files', pro4:'Pay once: $4. No subscription.', proSoon:'Coming soon', proBtn:'Get Pro – $4 one-time',
- tooBig:'This file is very large and may be slow on your device.'
+ proTitle:'No-Tricks Pro – one payment, forever', proSub:'All tools stay free. Pro is an optional one-time purchase that supports the project. No subscription, no auto-renewal.',
+ pro1:'Keeps the tools free and private for everyone', pro2:'Ad-free experience once ads are introduced', pro3:'Early access to new tools (scanner, batch processing)', pro4:'Pay once: $4. No subscription, never renews.', proSoon:'Coming soon', proBtn:'Get Pro – $4 one-time',
+ noTextImgs:'No selectable text was found (this looks like a scanned PDF and OCR is not supported yet). The page images were placed in the Word file instead.', about:'About', contact:'Contact', terms:'Terms', tables:'tables', images:'images', tooBig:'This file is very large and may be slow on your device.'
 },
 ar: {
  brand:'أدوات بلا خدع', ad:'إعلان', footer:'ملفاتك لا تغادر جهازك أبدًا.', privacy:'الخصوصية', pro:'النسخة المميزة',
@@ -42,7 +42,7 @@ ar: {
  back:'→ كل الأدوات', choose:'اختر الملفات', chooseOne:'اختر ملف PDF', drop:'أو اسحب الملفات وأفلتها هنا', privateNote:'تتم المعالجة على جهازك، ولا يُرفع أي شيء.',
  processing:'جارٍ العمل…', done:'تم!', download:'تنزيل', error:'حدث خطأ: ',
  needPdf:'يُرجى اختيار ملف PDF.', needTwo:'اختر ملفَّي PDF على الأقل.', needImg:'يُرجى اختيار صورة واحدة على الأقل.',
- convert:'تحويل إلى Word', wordLimit:'ملاحظة بصراحة: تستخرج هذه الأداة النص والبنية الأساسية (الفقرات والعناوين والصفحات). لا يُحتفَظ بالتنسيقات المعقدة أو الجداول أو الصور أو الخطوط. أما ملفات PDF الممسوحة ضوئيًا (صور للصفحات) فلا تحتوي على نص يمكن استخراجه.',
+ convert:'تحويل إلى Word', wordLimit:'ملاحظة بصراحة: تحتفظ هذه الأداة بالنص والعناوين وأحجام الخطوط والخط العريض والمائل والمسافات البادئة والجداول البسيطة والصور المضمّنة قدر الإمكان، لكنها لا تعيد إنتاج التنسيقات المعقدة (كالأعمدة والمربعات العائمة والخطوط الأصلية) بدقة. أما ملفات PDF الممسوحة ضوئيًا (صور للصفحات) فلا تحتوي على نص يمكن استخراجه.',
  noText:'لم يُعثر على نص قابل للتحديد. يبدو أن هذا الملف ممسوح ضوئيًا، لذا لا يوجد نص لاستخراجه (التعرّف الضوئي على الحروف غير مدعوم حاليًا).',
  merge:'دمج الملفات', moveUp:'أعلى', moveDown:'أسفل', remove:'حذف', pages:'صفحة',
  split:'تقسيم الملف', ranges:'نطاقات الصفحات', rangesHint:'مثال: 1-3، 5، 8-10 (كل نطاق يصبح ملفًا مستقلًا)', everyPage:'كل صفحة في ملف مستقل', badRange:'نطاق الصفحات غير صالح.',
@@ -56,6 +56,6 @@ ar: {
  fg:'اللون', bg:'الخلفية', logo:'شعار (اختياري)', size:'الحجم', png:'تنزيل PNG', svg:'تنزيل SVG', clearLogo:'إزالة الشعار',
  qrNote:'هذا رمز QR ثابت: المحتوى مخزَّن في الصورة نفسها، لذا يعمل إلى الأبد دون حساب أو اشتراك. جرّب مسحه دائمًا قبل الطباعة.',
  proTitle:'النسخة المميزة: دفعة واحدة مدى الحياة', proSub:'تبقى جميع الأدوات مجانية. النسخة المميزة شراء اختياري لمرة واحدة لدعم المشروع، بلا اشتراك وبلا تجديد تلقائي.',
- pro1:'بلا إعلانات', pro2:'معالجة دفعية (ملفات كثيرة دفعة واحدة)', pro3:'حدود أعلى للملفات الكبيرة جدًا', pro4:'ادفع مرة واحدة: 4 دولارات، بلا اشتراك.', proSoon:'قريبًا', proBtn:'احصل على النسخة المميزة – 4 دولارات لمرة واحدة',
- tooBig:'هذا الملف كبير جدًا وقد تكون معالجته بطيئة على جهازك.'
+ pro1:'تُبقي الأدوات مجانية وخاصة للجميع', pro2:'تجربة بلا إعلانات عند إضافة الإعلانات', pro3:'وصول مبكر إلى الأدوات الجديدة (الماسح الضوئي والمعالجة الدفعية)', pro4:'ادفع مرة واحدة: 4 دولارات، بلا اشتراك ولا تجديد.', proSoon:'قريبًا', proBtn:'احصل على النسخة المميزة – 4 دولارات لمرة واحدة',
+ noTextImgs:'لم يُعثر على نص قابل للتحديد (يبدو أن الملف ممسوح ضوئيًا، والتعرّف الضوئي على الحروف غير مدعوم حاليًا)، لذا وُضعت صور الصفحات في ملف Word بدلًا من النص.', about:'من نحن', contact:'تواصل معنا', terms:'شروط الاستخدام', tables:'جداول', images:'صور', tooBig:'هذا الملف كبير جدًا وقد تكون معالجته بطيئة على جهازك.'
 }};

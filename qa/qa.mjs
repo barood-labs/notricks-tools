@@ -2,7 +2,7 @@ import { chromium } from 'playwright-core';
 import fs from 'fs';
 const S = '/workspace/apps_studio/notricks/qa/samples/', O = '/workspace/apps_studio/notricks/qa/out/', SH = '/workspace/apps_studio/notricks/screenshots/';
 fs.mkdirSync(O,{recursive:true}); fs.mkdirSync(SH,{recursive:true});
-const URL0 = 'http://localhost:4173/';
+const URL0 = process.env.BASE_URL || 'http://localhost:4173/';
 const res = []; const ok = (n, c, d='') => { res.push({n, pass: !!c, d}); console.log((c?'PASS ':'FAIL ')+n+' '+d); };
 const browser = await chromium.launch({ executablePath: '/usr/bin/google-chrome', args:['--no-sandbox'] });
 for (const lang of ['en','ar']) for (const vp of ['desktop','mobile']) {
@@ -18,7 +18,7 @@ for (const lang of ['en','ar']) for (const vp of ['desktop','mobile']) {
     const sw = await page.evaluate(()=>document.documentElement.scrollWidth); ok(`${tag} no horizontal overflow`, sw <= (vp==='mobile'?390:1280), 'scrollWidth='+sw);
     await shot('01_home');
     // word EN + AR
-    for (const f of ['doc_en','doc_ar2','doc_ar_lo']) { await go('word'); await page.setInputFiles('#f', S+f+'.pdf'); await wait('#out a.btn, #out .err');
+    for (const f of ['doc_en','doc_ar2','doc_ar_lo','layout_en','layout_ar']) { await go('word'); await page.setInputFiles('#f', S+f+'.pdf'); await wait('#out a.btn, #out .err');
       const p = await dl('#out a.btn', f+'.docx'); ok(`${tag} pdf2word ${f}`, fs.statSync(p).size>1000, p); }
     await shot('02_pdf2word');
     await go('word'); await page.setInputFiles('#f', S+'scan.pdf'); await wait('#out .err'); ok(`${tag} pdf2word scanned -> honest no-text msg`, true);
@@ -44,7 +44,12 @@ for (const lang of ['en','ar']) for (const vp of ['desktop','mobile']) {
     await page.selectOption('#qt','vcard'); await page.fill('#q_fname', lang==='ar'?'زين':'Zain'); await page.fill('#q_lname','Test'); await page.fill('#q_phone','+15550100'); await page.fill('#q_email','a@example.com');
     await page.fill('#fg','#0f766e'); await page.setInputFiles('#logo', S+'logo.png'); await page.waitForTimeout(500); await dl('#png','qr_vcard_logo.png'); await dl('#svg','qr_vcard_logo.svg'); await shot('08_qr_vcard_logo'); ok(`${tag} qr no error shown`, !(await page.$('#out .err')));
     await page.selectOption('#qt','text'); await page.fill('#q_text', lang==='ar'?'مرحبًا بالعالم':'Hello world'); await dl('#png','qr_text.png');
-    await go('pro'); ok(`${tag} pro placeholder disabled (no fake payment)`, await page.isDisabled('#proBtn')); await shot('09_pro');
+    await go('pro'); ok(`${tag} pro button live -> payhip`, (await page.getAttribute('#proBtn','href'))==='https://payhip.com/b/n3kq7'); await shot('09_pro');
+    const slugs=['pdf-to-word','merge-pdf','split-pdf','compress-pdf','image-to-pdf','qr-code-generator'];
+    for (const sl of slugs) { const r = await page.goto(`${URL0}${lang}/${sl}/`); const lds = await page.$$eval('script[type="application/ld+json"]', e=>e.map(x=>JSON.parse(x.textContent)['@type']));
+      ok(`${tag} landing ${sl}`, r.status()===200 && lds.includes('FAQPage') && (await page.getAttribute('html','dir'))===(lang==='ar'?'rtl':'ltr'), lds.join(','));
+      if (sl==='qr-code-generator') { await shot('11_landing_qr'); await page.click('a.cta >> nth=0'); await page.waitForSelector('#qrCanvas'); ok(`${tag} landing CTA opens tool`, true); } }
+    for (const pg of ['about.html','contact.html','terms.html','sitemap.xml','robots.txt']) { const r = await page.goto(URL0+pg); ok(`${tag} ${pg}`, r.status()===200); }
     await page.goto(URL0+'privacy.html'); await shot('10_privacy'); ok(`${tag} privacy page`, (await page.textContent('h1')).includes('Privacy'));
   } catch (e) { ok(`${tag} RUN`, false, e.message.split('\n')[0]); await shot('zz_error'); }
   ok(`${tag} no JS errors`, errs.length===0, errs.join(' | '));

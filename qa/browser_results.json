@@ -35,6 +35,16 @@
   "d": "/workspace/apps_studio/notricks/qa/out/en_desktop_doc_ar_lo.docx"
  },
  {
+  "n": "en_desktop pdf2word layout_en",
+  "pass": true,
+  "d": "/workspace/apps_studio/notricks/qa/out/en_desktop_layout_en.docx"
+ },
+ {
+  "n": "en_desktop pdf2word layout_ar",
+  "pass": true,
+  "d": "/workspace/apps_studio/notricks/qa/out/en_desktop_layout_ar.docx"
+ },
+ {
   "n": "en_desktop pdf2word scanned -> honest no-text msg",
   "pass": true,
   "d": ""
@@ -60,7 +70,67 @@
   "d": ""
  },
  {
-  "n": "en_desktop pro placeholder disabled (no fake payment)",
+  "n": "en_desktop pro button live -> payhip",
+  "pass": true,
+  "d": ""
+ },
+ {
+  "n": "en_desktop landing pdf-to-word",
+  "pass": true,
+  "d": "WebApplication,FAQPage,HowTo,BreadcrumbList"
+ },
+ {
+  "n": "en_desktop landing merge-pdf",
+  "pass": true,
+  "d": "WebApplication,FAQPage,HowTo,BreadcrumbList"
+ },
+ {
+  "n": "en_desktop landing split-pdf",
+  "pass": true,
+  "d": "WebApplication,FAQPage,HowTo,BreadcrumbList"
+ },
+ {
+  "n": "en_desktop landing compress-pdf",
+  "pass": true,
+  "d": "WebApplication,FAQPage,HowTo,BreadcrumbList"
+ },
+ {
+  "n": "en_desktop landing image-to-pdf",
+  "pass": true,
+  "d": "WebApplication,FAQPage,HowTo,BreadcrumbList"
+ },
+ {
+  "n": "en_desktop landing qr-code-generator",
+  "pass": true,
+  "d": "WebApplication,FAQPage,HowTo,BreadcrumbList"
+ },
+ {
+  "n": "en_desktop landing CTA opens tool",
+  "pass": true,
+  "d": ""
+ },
+ {
+  "n": "en_desktop about.html",
+  "pass": true,
+  "d": ""
+ },
+ {
+  "n": "en_desktop contact.html",
+  "pass": true,
+  "d": ""
+ },
+ {
+  "n": "en_desktop terms.html",
+  "pass": true,
+  "d": ""
+ },
+ {
+  "n": "en_desktop sitemap.xml",
+  "pass": true,
+  "d": ""
+ },
+ {
+  "n": "en_desktop robots.txt",
   "pass": true,
   "d": ""
  },
@@ -110,6 +180,16 @@
   "d": "/workspace/apps_studio/notricks/qa/out/en_mobile_doc_ar_lo.docx"
  },
  {
+  "n": "en_mobile pdf2word layout_en",
+  "pass": true,
+  "d": "/workspace/apps_studio/notricks/qa/out/en_mobile_layout_en.docx"
+ },
+ {
+  "n": "en_mobile pdf2word layout_ar",
+  "pass": true,
+  "d": "/workspace/apps_studio/notricks/qa/out/en_mobile_layout_ar.docx"
+ },
+ {
   "n": "en_mobile pdf2word scanned -> honest no-text msg",
   "pass": true,
   "d": ""
@@ -135,7 +215,67 @@
   "d": ""
  },
  {
-  "n": "en_mobile pro placeholder disabled (no fake payment)",
+  "n": "en_mobile pro button live -> payhip",
+  "pass": true,
+  "d": ""
+ },
+ {
+  "n": "en_mobile landing pdf-to-word",
+  "pass": true,
+  "d": "WebApplication,FAQPage,HowTo,BreadcrumbList"
+ },
+ {
+  "n": "en_mobile landing merge-pdf",
+  "pass": true,
+  "d": "WebApplication,FAQPage,HowTo,BreadcrumbList"
+ },
+ {
+  "n": "en_mobile landing split-pdf",
+  "pass": true,
+  "d": "WebApplication,FAQPage,HowTo,BreadcrumbList"
+ },
+ {
+  "n": "en_mobile landing compress-pdf",
+  "pass": true,
+  "d": "WebApplication,FAQPage,HowTo,BreadcrumbList"
+ },
+ {
+  "n": "en_mobile landing image-to-pdf",
+  "pass": true,
+  "d": "WebApplication,FAQPage,HowTo,BreadcrumbList"
+ },
+ {
+  "n": "en_mobile landing qr-code-generator",
+  "pass": true,
+  "d": "WebApplication,FAQPage,HowTo,BreadcrumbList"
+ },
+ {
+  "n": "en_mobile landing CTA opens tool",
+  "pass": true,
+  "d": ""
+ },
+ {
+  "n": "en_mobile about.html",
+  "pass": true,
+  "d": ""
+ },
+ {
+  "n": "en_mobile contact.html",
+  "pass": true,
+  "d": ""
+ },
+ {
+  "n": "en_mobile terms.html",
+  "pass": true,
+  "d": ""
+ },
+ {
+  "n": "en_mobile sitemap.xml",
+  "pass": true,
+  "d": ""
+ },
+ {
+  "n": "en_mobile robots.txt",
   "pass": true,
   "d": ""
  },
@@ -185,6 +325,16 @@
   "d": "/workspace/apps_studio/notricks/qa/out/ar_desktop_doc_ar_lo.docx"
  },
  {
+  "n": "ar_desktop pdf2word layout_en",
+  "pass": true,
+  "d": "/workspace/apps_studio/notricks/qa/out/ar_desktop_layout_en.docx"
+ },
+ {
+  "n": "ar_desktop pdf2word layout_ar",
+  "pass": true,
+  "d": "/workspace/apps_studio/notricks/qa/out/ar_desktop_layout_ar.docx"
+ },
+ {
   "n": "ar_desktop pdf2word scanned -> honest no-text msg",
   "pass": true,
   "d": ""
@@ -210,7 +360,67 @@
   "d": ""
  },
  {
-  "n": "ar_desktop pro placeholder disabled (no fake payment)",
+  "n": "ar_desktop pro button live -> payhip",
+  "pass": true,
+  "d": ""
+ },
+ {
+  "n": "ar_desktop landing pdf-to-word",
+  "pass": true,
+  "d": "WebApplication,FAQPage,HowTo,BreadcrumbList"
+ },
+ {
+  "n": "ar_desktop landing merge-pdf",
+  "pass": true,
+  "d": "WebApplication,FAQPage,HowTo,BreadcrumbList"
+ },
+ {
+  "n": "ar_desktop landing split-pdf",
+  "pass": true,
+  "d": "WebApplication,FAQPage,HowTo,BreadcrumbList"
+ },
+ {
+  "n": "ar_desktop landing compress-pdf",
+  "pass": true,
+  "d": "WebApplication,FAQPage,HowTo,BreadcrumbList"
+ },
+ {
+  "n": "ar_desktop landing image-to-pdf",
+  "pass": true,
+  "d": "WebApplication,FAQPage,HowTo,BreadcrumbList"
+ },
+ {
+  "n": "ar_desktop landing qr-code-generator",
+  "pass": true,
+  "d": "WebApplication,FAQPage,HowTo,BreadcrumbList"
+ },
+ {
+  "n": "ar_desktop landing CTA opens tool",
+  "pass": true,
+  "d": ""
+ },
+ {
+  "n": "ar_desktop about.html",
+  "pass": true,
+  "d": ""
+ },
+ {
+  "n": "ar_desktop contact.html",
+  "pass": true,
+  "d": ""
+ },
+ {
+  "n": "ar_desktop terms.html",
+  "pass": true,
+  "d": ""
+ },
+ {
+  "n": "ar_desktop sitemap.xml",
+  "pass": true,
+  "d": ""
+ },
+ {
+  "n": "ar_desktop robots.txt",
   "pass": true,
   "d": ""
  },
@@ -260,6 +470,16 @@
   "d": "/workspace/apps_studio/notricks/qa/out/ar_mobile_doc_ar_lo.docx"
  },
  {
+  "n": "ar_mobile pdf2word layout_en",
+  "pass": true,
+  "d": "/workspace/apps_studio/notricks/qa/out/ar_mobile_layout_en.docx"
+ },
+ {
+  "n": "ar_mobile pdf2word layout_ar",
+  "pass": true,
+  "d": "/workspace/apps_studio/notricks/qa/out/ar_mobile_layout_ar.docx"
+ },
+ {
   "n": "ar_mobile pdf2word scanned -> honest no-text msg",
   "pass": true,
   "d": ""
@@ -285,7 +505,67 @@
   "d": ""
  },
  {
-  "n": "ar_mobile pro placeholder disabled (no fake payment)",
+  "n": "ar_mobile pro button live -> payhip",
+  "pass": true,
+  "d": ""
+ },
+ {
+  "n": "ar_mobile landing pdf-to-word",
+  "pass": true,
+  "d": "WebApplication,FAQPage,HowTo,BreadcrumbList"
+ },
+ {
+  "n": "ar_mobile landing merge-pdf",
+  "pass": true,
+  "d": "WebApplication,FAQPage,HowTo,BreadcrumbList"
+ },
+ {
+  "n": "ar_mobile landing split-pdf",
+  "pass": true,
+  "d": "WebApplication,FAQPage,HowTo,BreadcrumbList"
+ },
+ {
+  "n": "ar_mobile landing compress-pdf",
+  "pass": true,
+  "d": "WebApplication,FAQPage,HowTo,BreadcrumbList"
+ },
+ {
+  "n": "ar_mobile landing image-to-pdf",
+  "pass": true,
+  "d": "WebApplication,FAQPage,HowTo,BreadcrumbList"
+ },
+ {
+  "n": "ar_mobile landing qr-code-generator",
+  "pass": true,
+  "d": "WebApplication,FAQPage,HowTo,BreadcrumbList"
+ },
+ {
+  "n": "ar_mobile landing CTA opens tool",
+  "pass": true,
+  "d": ""
+ },
+ {
+  "n": "ar_mobile about.html",
+  "pass": true,
+  "d": ""
+ },
+ {
+  "n": "ar_mobile contact.html",
+  "pass": true,
+  "d": ""
+ },
+ {
+  "n": "ar_mobile terms.html",
+  "pass": true,
+  "d": ""
+ },
+ {
+  "n": "ar_mobile sitemap.xml",
+  "pass": true,
+  "d": ""
+ },
+ {
+  "n": "ar_mobile robots.txt",
   "pass": true,
   "d": ""
  },

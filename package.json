@@ -4,7 +4,7 @@
  "type": "module",
  "scripts": {
   "dev": "vite",
-  "build": "vite build",
+  "build": "node scripts/gen-pages.mjs && vite build",
   "preview": "vite preview --port 4173"
  },
  "dependencies": {

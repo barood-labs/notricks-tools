@@ -21,3 +21,5 @@ label{display:block;margin:8px 0 4px;font-weight:600}input[type=text],input[type
 @media(max-width:600px){.ad-slot{min-height:60px;margin:8px}}
 .pro{border:2px solid var(--c)}footer{text-align:center;color:var(--mu);padding:20px;font-size:.9rem}
 [dir=rtl] .hero,[dir=rtl] footer{font-family:"Noto Sans Arabic",Tahoma,system-ui,sans-serif}
+
+nav.seo{text-align:center;font-size:.85rem;padding:10px;line-height:2}

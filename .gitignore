@@ -3,3 +3,5 @@ dist/
 qa/out/
 qa/samples/*.pdf
 qa/preview.log
+promo/
+qa/*.log

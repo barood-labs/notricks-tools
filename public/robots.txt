@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://barood-labs.github.io/notricks-tools/sitemap.xml

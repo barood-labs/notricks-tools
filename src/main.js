@@ -1,5 +1,6 @@
 import './style.css';
 import { T } from './i18n.js';
+import { PRO_URL, PRO_PRICE } from './config.js';
 let PDFDocument, pdfjs, D, QRCode;
 const loadLib = async () => { if (!PDFDocument) ({ PDFDocument } = await import('pdf-lib')); };
 const loadPdfjs = async () => { if (!pdfjs) { pdfjs = await import('pdfjs-dist'); const w = await import('pdfjs-dist/build/pdf.worker.min.mjs?url'); pdfjs.GlobalWorkerOptions.workerSrc = w.default; } };
@@ -61,44 +62,10 @@ function toolWord(){
     if (!f || !isPdf(f)) return out(`<p class="err">${t('needPdf')}</p>`);
     busy();
     try {
-      await loadPdfjs(); await loadDocx(); const { Document, Packer, Paragraph, TextRun, HeadingLevel, PageBreak, AlignmentType } = D;
-      const pdf = await pdfjs.getDocument({ data: await f.arrayBuffer() }).promise;
-      const children = []; let totalChars = 0;
-      for (let p = 1; p <= pdf.numPages; p++) {
-        const page = await pdf.getPage(p); const tc = await page.getTextContent();
-        const items = tc.items.filter(i => i.str !== undefined).map(i => ({ ...i, str: i.str.replace(/\u0000/g, '') }));
-        const lines = [];
-        for (const it of items) {
-          const y = it.transform[5], h = Math.abs(it.transform[3]) || it.height || 10;
-          let ln = lines.find(l => Math.abs(l.y - y) < h * 0.5);
-          if (!ln) { ln = { y, h, parts: [] }; lines.push(ln); }
-          ln.parts.push({ x: it.transform[4], s: it.str, w: it.width }); ln.h = Math.max(ln.h, h);
-        }
-        lines.sort((a,b) => b.y - a.y);
-        const hs = lines.map(l=>l.h).sort((a,b)=>a-b); const med = hs[Math.floor(hs.length/2)] || 10;
-        let para = null, prev = null;
-        const flush = () => { if (para) { children.push(para.build()); para = null; } };
-        for (const l of lines) {
-          const rtl = /[\u0590-\u08FF]/.test(l.parts.map(p=>p.s).join(''));
-          l.parts.sort((a,b) => rtl ? b.x - a.x : a.x - b.x);
-          let txt = ''; let lastEnd = null;
-          for (const pt of l.parts) { const gap = lastEnd===null ? 0 : (rtl ? lastEnd - (pt.x + pt.w) : pt.x - lastEnd); if (gap > l.h*0.18 && !txt.endsWith(' ') && !pt.s.startsWith(' ')) txt += ' '; txt += pt.s; lastEnd = rtl ? pt.x : pt.x + pt.w; }
-          txt = txt.normalize('NFKC').replace(/\s+/g,' ').trim(); if (!txt) continue; totalChars += txt.length;
-          const heading = l.h > med * 1.25 && txt.length < 120;
-          const gap = prev ? (prev.y - l.y) : 0;
-          if (heading) { flush(); children.push(new Paragraph({ heading: l.h > med*1.7 ? HeadingLevel.HEADING_1 : HeadingLevel.HEADING_2, bidirectional: rtl, alignment: rtl?AlignmentType.RIGHT:undefined, children:[new TextRun({text:txt, rightToLeft: rtl})] })); }
-          else {
-            if (!para || gap > l.h * 1.8 || para.rtl !== rtl) { flush(); para = { rtl, txt: [], build(){ return new Paragraph({ bidirectional:this.rtl, alignment:this.rtl?AlignmentType.RIGHT:undefined, spacing:{after:120}, children:[new TextRun({text:this.txt.join(' '), rightToLeft:this.rtl})] }); } }; }
-            para.txt.push(txt);
-          }
-          prev = l;
-        }
-        flush();
-        if (p < pdf.numPages) children.push(new Paragraph({ children: [new PageBreak()] }));
-      }
-      if (totalChars < 5) return out(`<p class="err">${t('noText')}</p>`);
-      const blob = await Packer.toBlob(new Document({ sections: [{ children }] }));
-      out(`<p class="ok">${t('done')} (${pdf.numPages} ${t('pages')})</p>${dlLink(blob, baseName(f)+'.docx')}`);
+      await loadPdfjs(); await loadDocx(); const { pdfToDocx } = await import('./pdf2word.js');
+      const r = await pdfToDocx(pdfjs, D, await f.arrayBuffer());
+      if (r.empty) return out(`<p class="err">${t('noText')}</p>`);
+      out(`<p class="ok">${t('done')} (${r.pages} ${t('pages')}${r.tables?` · ${r.tables} ${t('tables')}`:''}${r.images?` · ${r.images} ${t('images')}`:''})</p>${r.noText?`<p class="err">${t('noTextImgs')}</p>`:''}${dlLink(r.blob, baseName(f)+'.docx')}`);
     } catch (e) { fail(e); }
   });
 }
@@ -245,12 +212,10 @@ function toolQr(){
 }
 
 /* ---------- Pro (placeholder, no payment) ---------- */
-// TODO(payment): replace PRO_CHECKOUT_URL with the real Gumroad or Lemon Squeezy product link once the user creates it. No payment is processed here.
-const PRO_CHECKOUT_URL = '';
 function pro(){
   app.innerHTML = `<p><a href="#/">${t('back')}</a></p><div class="card pro"><h1>${t('proTitle')}</h1><p>${t('proSub')}</p>
   <ul>${[1,2,3,4].map(i=>`<li>${t('pro'+i)}</li>`).join('')}</ul>
-  ${PRO_CHECKOUT_URL ? `<a class="btn" href="${PRO_CHECKOUT_URL}" rel="noopener">${t('proBtn')}</a>` : `<button class="btn" disabled id="proBtn">${t('proBtn')} (${t('proSoon')})</button>`}</div>`;
+  ${PRO_URL ? `<a class="btn" id="proBtn" href="${PRO_URL}" target="_blank" rel="noopener">${t('proBtn')}</a>` : `<button class="btn" disabled id="proBtn">${t('proBtn')} (${t('proSoon')})</button>`}</div>`;
 }
 
 const ROUTES = { '': home, word: toolWord, merge: toolMerge, split: toolSplit, compress: toolCompress, img: toolImg, qr: toolQr, pro };
