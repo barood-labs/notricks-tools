@@ -47,4 +47,5 @@ simple('terms.html','Terms of Use', `<p><em>Last updated: October 2026</em></p><
 fs.writeFileSync(`${out}/sitemap.xml`, `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls.map(u=>`  <url><loc>${u}</loc><lastmod>2026-10-19</lastmod></url>`).join('\n')}\n</urlset>\n`);
 fs.writeFileSync(`${out}/robots.txt`, `User-agent: *\nAllow: /\nSitemap: ${BASE}sitemap.xml\n`);
 fs.writeFileSync(`${out}/.nojekyll`, '');
+fs.mkdirSync(`${out}/vendor`,{recursive:true}); fs.copyFileSync('node_modules/@techstark/opencv-js/dist/opencv.js', `${out}/vendor/opencv.js`);
 console.log('pages', urls.length);

@@ -28,7 +28,7 @@ function applyLang(){
 }
 $('#langBtn').onclick = () => { lang = lang==='ar'?'en':'ar'; applyLang(); };
 
-const TOOLS = [['word','📝'],['merge','🧩'],['split','✂️'],['compress','🗜️'],['img','🖼️'],['qr','🔳']];
+const TOOLS = [['word','📝'],['merge','🧩'],['split','✂️'],['compress','🗜️'],['img','🖼️'],['scan','📷'],['qr','🔳']];
 function home(){
   app.innerHTML = `<section class="hero"><h1>${t('heroTitle')}</h1><p>${t('heroSub')}</p>
   <div class="badges">${[1,2,3,4].map(i=>`<span>✓ ${t('badge'+i)}</span>`).join('')}</div></section>
@@ -211,6 +211,73 @@ function toolQr(){
   loadQr().then(setType);
 }
 
+
+/* ---------- Scanner ---------- */
+function toolScan(){
+  const pages = []; let S = null, cv = null;
+  shell('scan', `<p class="note">${t('scanNote')}</p>
+   <div class="drop" id="dz-f"><input type="file" id="cam" accept="image/*" capture="environment" hidden><input type="file" id="f" accept="image/*" multiple hidden>
+   <button class="btn" type="button" id="camBtn">📷 ${t('takePhoto')}</button> <button class="btn" type="button" id="upBtn">🖼️ ${t('uploadImgs')}</button>
+   <div>${t('drop')}</div><small>🔒 ${t('privateNote')}</small></div>
+   <div id="editor" hidden><h3>${t('adjust')}</h3><p><small>${t('adjustHint')}</small></p><canvas id="ed" style="width:100%;max-width:640px;touch-action:none;border-radius:8px;background:#000"></canvas>
+     <p><button class="btn" id="edOk">✓ ${t('applyCrop')}</button> <button class="btn sm" id="edAuto">${t('autoDetect')}</button> <button class="btn sm" id="edFull">${t('fullImage')}</button> <button class="btn sm" id="edCancel">${t('cancel')}</button></p></div>
+   <ul class="list scan-list" id="lst"></ul>
+   <div id="exp" hidden><div class="row"><div><label for="ps">${t('pageSize')}</label><select id="ps"><option value="a4">A4</option><option value="fit">${t('fit')}</option></select></div></div>
+   <p><button class="btn" id="pdfBtn">⬇ ${t('exportPdf')}</button> <button class="btn" id="jpgBtn">⬇ ${t('exportJpg')}</button></p></div>`);
+  $('#camBtn').onclick = () => $('#cam').click(); $('#upBtn').onclick = () => $('#f').click();
+  const busyMsg = m => out(`<p>${m}</p>`);
+  const ensureCv = async () => { if (!cv) { busyMsg(t('loadingScanner')); cv = await loadScanner().then(m => (S = m).loadCv()); } return cv; };
+  const process = (pg) => { pg.warped = S.warp(cv, pg.src, pg.pts); pg.out = S.applyFilter(cv, pg.warped, pg.filter); };
+  const add = async files => { files = files.filter(f => f.type.startsWith('image/')); if (!files.length) return out(`<p class="err">${t('needImg')}</p>`);
+    try { await ensureCv(); busyMsg(t('processing'));
+      for (const f of files) { const src = await S.fileToCanvas(f); const d = S.detectCorners(cv, src); const pg = { src, pts: d.pts, auto: d.auto, filter: 'enhance', name: f.name }; process(pg); pages.push(pg); }
+      out(`<p class="ok">${t('done')}</p>`); render(); } catch (e) { fail(e); } };
+  $('#cam').onchange = () => add([...$('#cam').files]); 
+  const dz = $('#dz-f'); $('#f').onchange = () => add([...$('#f').files]);
+  dz.ondragover = e => { e.preventDefault(); dz.classList.add('over'); }; dz.ondragleave = () => dz.classList.remove('over');
+  dz.ondrop = e => { e.preventDefault(); dz.classList.remove('over'); add([...e.dataTransfer.files]); };
+  const FL = ['color','gray','bw','enhance'];
+  function render(){
+    $('#lst').innerHTML = pages.map((p, i) => `<li data-i="${i}"><img src="${thumb(p.out)}" alt="${t('page')} ${i+1}" style="width:72px;height:auto;border:1px solid #cbd5e1;border-radius:4px">
+      <span class="n">${t('page')} ${i+1}${p.auto ? '' : ` <small class="err">${t('noEdges')}</small>`}</span>
+      <select data-a="f" data-i="${i}" aria-label="${t('filter')}">${FL.map(f => `<option value="${f}" ${p.filter===f?'selected':''}>${t('f_'+f)}</option>`).join('')}</select>
+      <button class="btn sm" data-a="e" data-i="${i}">⤢ ${t('corners')}</button><button class="btn sm" data-a="u" data-i="${i}">↑</button><button class="btn sm" data-a="d" data-i="${i}">↓</button><button class="btn sm" data-a="x" data-i="${i}">✕ ${t('remove')}</button></li>`).join('');
+    $('#exp').hidden = !pages.length;
+  }
+  const thumb = c => { const k = 160 / c.width, t2 = document.createElement('canvas'); t2.width = 160; t2.height = Math.round(c.height * k); t2.getContext('2d').drawImage(c, 0, 0, t2.width, t2.height); return t2.toDataURL('image/jpeg', 0.7); };
+  $('#lst').onchange = e => { const sel = e.target.closest('select[data-a=f]'); if (!sel) return; const p = pages[+sel.dataset.i]; p.filter = sel.value; p.out = S.applyFilter(cv, p.warped, p.filter); render(); };
+  $('#lst').onclick = e => { const b = e.target.closest('button'); if (!b) return; const i = +b.dataset.i;
+    if (b.dataset.a==='u' && i>0) [pages[i-1],pages[i]]=[pages[i],pages[i-1]];
+    if (b.dataset.a==='d' && i<pages.length-1) [pages[i+1],pages[i]]=[pages[i],pages[i+1]];
+    if (b.dataset.a==='x') pages.splice(i,1);
+    if (b.dataset.a==='e') return openEditor(i); render(); };
+  // corner editor
+  let ei = -1, pts = null, drag = -1; const ed = $('#ed'), ctx = ed.getContext('2d');
+  function openEditor(i){ ei = i; pts = pages[i].pts.map(p => ({...p})); ed.width = pages[i].src.width; ed.height = pages[i].src.height; $('#editor').hidden = false; draw(); $('#editor').scrollIntoView({block:'start'}); }
+  function draw(){ const src = pages[ei].src, r = Math.max(ed.width, ed.height) / 60; ctx.drawImage(src, 0, 0);
+    ctx.fillStyle = 'rgba(15,118,110,.18)'; ctx.strokeStyle = '#14b8a6'; ctx.lineWidth = r / 3; ctx.beginPath(); pts.forEach((p, j) => j ? ctx.lineTo(p.x, p.y) : ctx.moveTo(p.x, p.y)); ctx.closePath(); ctx.fill(); ctx.stroke();
+    pts.forEach(p => { ctx.beginPath(); ctx.arc(p.x, p.y, r, 0, 7); ctx.fillStyle = '#fff'; ctx.fill(); ctx.stroke(); }); }
+  const pos = e => { const b = ed.getBoundingClientRect(); return { x: (e.clientX - b.left) * ed.width / b.width, y: (e.clientY - b.top) * ed.height / b.height }; };
+  ed.onpointerdown = e => { const q = pos(e); let m = 1e9; pts.forEach((p, j) => { const d = Math.hypot(p.x - q.x, p.y - q.y); if (d < m) { m = d; drag = j; } }); if (m > Math.max(ed.width, ed.height) / 8) drag = -1; else ed.setPointerCapture(e.pointerId); };
+  ed.onpointermove = e => { if (drag < 0) return; const q = pos(e); pts[drag] = { x: Math.max(0, Math.min(ed.width, q.x)), y: Math.max(0, Math.min(ed.height, q.y)) }; draw(); };
+  ed.onpointerup = () => { drag = -1; };
+  $('#edAuto').onclick = () => { const d = S.detectCorners(cv, pages[ei].src); pts = d.pts; draw(); };
+  $('#edFull').onclick = () => { const W = ed.width, H = ed.height; pts = [{x:0,y:0},{x:W,y:0},{x:W,y:H},{x:0,y:H}]; draw(); };
+  $('#edCancel').onclick = () => { $('#editor').hidden = true; };
+  $('#edOk').onclick = () => { const p = pages[ei]; p.pts = pts; p.auto = true; process(p); $('#editor').hidden = true; render(); };
+  window.__scan = { pages, setCorners: (i, P) => { pages[i].pts = P; process(pages[i]); render(); } }; // QA hook
+  const jpgBlob = c => new Promise(r => c.toBlob(r, 'image/jpeg', 0.9));
+  $('#pdfBtn').onclick = async () => { busyMsg(t('processing'));
+    try { await loadLib(); const doc = await PDFDocument.create();
+      for (const p of pages) { const img = await doc.embedJpg(await (await jpgBlob(p.out)).arrayBuffer());
+        let W, H; if ($('#ps').value === 'a4') { W = 595.28; H = 841.89; if (img.width > img.height) [W, H] = [H, W]; } else { W = img.width * 0.75; H = img.height * 0.75; }
+        const s = Math.min(W / img.width, H / img.height); const w = img.width * s, h = img.height * s; doc.addPage([W, H]).drawImage(img, { x: (W - w) / 2, y: (H - h) / 2, width: w, height: h }); }
+      out(`<p class="ok">${t('done')} (${pages.length} ${t('pages')})</p>${dlLink(new Blob([await doc.save()], { type: 'application/pdf' }), 'scan.pdf')}`);
+    } catch (e) { fail(e); } };
+  $('#jpgBtn').onclick = async () => { let h = ''; for (let i = 0; i < pages.length; i++) h += dlLink(await jpgBlob(pages[i].out), `scan_${i+1}.jpg`); out(`<p class="ok">${t('done')}</p>${h}`); };
+}
+const loadScanner = () => import('./scanner.js');
+
 /* ---------- Pro (placeholder, no payment) ---------- */
 const sha256 = async txt => [...new Uint8Array(await crypto.subtle.digest('SHA-256', new TextEncoder().encode(txt)))].map(b => b.toString(16).padStart(2, '0')).join('');
 const isPro = () => localStorage.getItem('ntpro') === PRO_CODE_HASH;
@@ -231,7 +298,7 @@ function pro(){
     if (h === PRO_CODE_HASH) { localStorage.setItem('ntpro', h); applyPro(); pro(); } else { $('#codeMsg').className = 'err'; $('#codeMsg').textContent = t('badCode'); } };
 }
 
-const ROUTES = { '': home, word: toolWord, merge: toolMerge, split: toolSplit, compress: toolCompress, img: toolImg, qr: toolQr, pro };
+const ROUTES = { '': home, word: toolWord, merge: toolMerge, split: toolSplit, compress: toolCompress, img: toolImg, qr: toolQr, scan: toolScan, pro };
 function route(){ const k = location.hash.replace(/^#\/?/, ''); (ROUTES[k] || home)(); window.scrollTo(0,0); }
 window.addEventListener('hashchange', route);
 applyLang();

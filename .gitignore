@@ -6,3 +6,4 @@ qa/preview.log
 promo/
 qa/*.log
 payhip/
+public/vendor/

@@ -100,6 +100,11 @@
   "d": "WebApplication,FAQPage,HowTo,BreadcrumbList"
  },
  {
+  "n": "en_desktop landing document-scanner",
+  "pass": true,
+  "d": "WebApplication,FAQPage,HowTo,BreadcrumbList"
+ },
+ {
   "n": "en_desktop landing qr-code-generator",
   "pass": true,
   "d": "WebApplication,FAQPage,HowTo,BreadcrumbList"
@@ -241,6 +246,11 @@
  },
  {
   "n": "en_mobile landing image-to-pdf",
+  "pass": true,
+  "d": "WebApplication,FAQPage,HowTo,BreadcrumbList"
+ },
+ {
+  "n": "en_mobile landing document-scanner",
   "pass": true,
   "d": "WebApplication,FAQPage,HowTo,BreadcrumbList"
  },
@@ -390,6 +400,11 @@
   "d": "WebApplication,FAQPage,HowTo,BreadcrumbList"
  },
  {
+  "n": "ar_desktop landing document-scanner",
+  "pass": true,
+  "d": "WebApplication,FAQPage,HowTo,BreadcrumbList"
+ },
+ {
   "n": "ar_desktop landing qr-code-generator",
   "pass": true,
   "d": "WebApplication,FAQPage,HowTo,BreadcrumbList"
@@ -531,6 +546,11 @@
  },
  {
   "n": "ar_mobile landing image-to-pdf",
+  "pass": true,
+  "d": "WebApplication,FAQPage,HowTo,BreadcrumbList"
+ },
+ {
+  "n": "ar_mobile landing document-scanner",
   "pass": true,
   "d": "WebApplication,FAQPage,HowTo,BreadcrumbList"
  },

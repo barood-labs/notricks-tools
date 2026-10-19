@@ -13,7 +13,7 @@ for (const lang of ['en','ar']) for (const vp of ['desktop','mobile']) {
   const dl = async (sel, name) => { const [d] = await Promise.all([page.waitForEvent('download',{timeout:120000}), page.click(sel)]); const p = O+tag+'_'+name; await d.saveAs(p); return p; };
   const wait = async sel => page.waitForSelector(sel, { timeout: 120000 });
   try {
-    await go(''); ok(`${tag} home dir`, (await page.getAttribute('html','dir')) === (lang==='ar'?'rtl':'ltr')); ok(`${tag} 6 tool cards`, (await page.$$('.card')).length===6);
+    await go(''); ok(`${tag} home dir`, (await page.getAttribute('html','dir')) === (lang==='ar'?'rtl':'ltr')); ok(`${tag} 6 tool cards`, (await page.$$('.card')).length===7);
     ok(`${tag} ad slots`, (await page.$$('[data-ad-slot]')).length===2);
     const sw = await page.evaluate(()=>document.documentElement.scrollWidth); ok(`${tag} no horizontal overflow`, sw <= (vp==='mobile'?390:1280), 'scrollWidth='+sw);
     await shot('01_home');
@@ -45,7 +45,7 @@ for (const lang of ['en','ar']) for (const vp of ['desktop','mobile']) {
     await page.fill('#fg','#0f766e'); await page.setInputFiles('#logo', S+'logo.png'); await page.waitForTimeout(500); await dl('#png','qr_vcard_logo.png'); await dl('#svg','qr_vcard_logo.svg'); await shot('08_qr_vcard_logo'); ok(`${tag} qr no error shown`, !(await page.$('#out .err')));
     await page.selectOption('#qt','text'); await page.fill('#q_text', lang==='ar'?'مرحبًا بالعالم':'Hello world'); await dl('#png','qr_text.png');
     await go('pro'); ok(`${tag} pro button live -> payhip`, (await page.getAttribute('#proBtn','href'))==='https://payhip.com/b/n3kq7'); await shot('09_pro');
-    const slugs=['pdf-to-word','merge-pdf','split-pdf','compress-pdf','image-to-pdf','qr-code-generator'];
+    const slugs=['pdf-to-word','merge-pdf','split-pdf','compress-pdf','image-to-pdf','document-scanner','qr-code-generator'];
     for (const sl of slugs) { const r = await page.goto(`${URL0}${lang}/${sl}/`); const lds = await page.$$eval('script[type="application/ld+json"]', e=>e.map(x=>JSON.parse(x.textContent)['@type']));
       ok(`${tag} landing ${sl}`, r.status()===200 && lds.includes('FAQPage') && (await page.getAttribute('html','dir'))===(lang==='ar'?'rtl':'ltr'), lds.join(','));
       if (sl==='qr-code-generator') { await shot('11_landing_qr'); await page.click('a.cta >> nth=0'); await page.waitForSelector('#qrCanvas'); ok(`${tag} landing CTA opens tool`, true); } }
