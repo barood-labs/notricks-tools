@@ -23,3 +23,5 @@ label{display:block;margin:8px 0 4px;font-weight:600}input[type=text],input[type
 [dir=rtl] .hero,[dir=rtl] footer{font-family:"Noto Sans Arabic",Tahoma,system-ui,sans-serif}
 
 nav.seo{text-align:center;font-size:.85rem;padding:10px;line-height:2}
+
+.is-pro .ad-slot{display:none!important}.pro-badge{background:#fbbf24;color:#422006;border-radius:99px;padding:5px 12px;font-weight:800;text-decoration:none;margin-inline-end:8px}.unlock{margin-top:18px;border-top:1px solid #e2e8f0;padding-top:12px}.unlock .row>input{flex:3}.unlock .row>button{flex:1}

@@ -1,6 +1,6 @@
 import './style.css';
 import { T } from './i18n.js';
-import { PRO_URL, PRO_PRICE } from './config.js';
+import { PRO_URL, PRO_PRICE, PRO_CODE_HASH } from './config.js';
 let PDFDocument, pdfjs, D, QRCode;
 const loadLib = async () => { if (!PDFDocument) ({ PDFDocument } = await import('pdf-lib')); };
 const loadPdfjs = async () => { if (!pdfjs) { pdfjs = await import('pdfjs-dist'); const w = await import('pdfjs-dist/build/pdf.worker.min.mjs?url'); pdfjs.GlobalWorkerOptions.workerSrc = w.default; } };
@@ -24,7 +24,7 @@ function applyLang(){
   document.querySelectorAll('[data-i18n]').forEach(e => e.textContent = t(e.dataset.i18n));
   $('#privLink').href = 'privacy.html';
   document.title = lang==='ar' ? 'أدوات بلا خدع – أدوات PDF مجانية وخاصة ورموز QR لا تنتهي صلاحيتها' : 'No-Tricks Tools – Free private PDF tools & QR codes that never expire';
-  route();
+  applyPro(); route();
 }
 $('#langBtn').onclick = () => { lang = lang==='ar'?'en':'ar'; applyLang(); };
 
@@ -212,10 +212,23 @@ function toolQr(){
 }
 
 /* ---------- Pro (placeholder, no payment) ---------- */
+const sha256 = async txt => [...new Uint8Array(await crypto.subtle.digest('SHA-256', new TextEncoder().encode(txt)))].map(b => b.toString(16).padStart(2, '0')).join('');
+const isPro = () => localStorage.getItem('ntpro') === PRO_CODE_HASH;
+function applyPro(){
+  document.body.classList.toggle('is-pro', isPro());
+  let bd = document.getElementById('proBadge');
+  if (isPro()) { if (!bd) { bd = document.createElement('a'); bd.id = 'proBadge'; bd.href = '#/pro'; bd.className = 'pro-badge'; document.querySelector('.top nav').prepend(bd); } bd.textContent = '★ ' + t('proBadge'); }
+  else if (bd) bd.remove();
+}
 function pro(){
+  if (isPro()) { app.innerHTML = `<p><a href="#/">${t('back')}</a></p><div class="card pro" id="proThanks"><h1>★ ${t('proThanks')}</h1><p>${t('proThanksSub')}</p>
+    <h3>${t('perksTitle')}</h3><ul>${[1,2,3].map(i=>`<li>${t('perk'+i)}</li>`).join('')}</ul></div>`; return; }
   app.innerHTML = `<p><a href="#/">${t('back')}</a></p><div class="card pro"><h1>${t('proTitle')}</h1><p>${t('proSub')}</p>
   <ul>${[1,2,3,4].map(i=>`<li>${t('pro'+i)}</li>`).join('')}</ul>
-  ${PRO_URL ? `<a class="btn" id="proBtn" href="${PRO_URL}" target="_blank" rel="noopener">${t('proBtn')}</a>` : `<button class="btn" disabled id="proBtn">${t('proBtn')} (${t('proSoon')})</button>`}</div>`;
+  ${PRO_URL ? `<a class="btn" id="proBtn" href="${PRO_URL}" target="_blank" rel="noopener">${t('proBtn')}</a>` : `<button class="btn" disabled id="proBtn">${t('proBtn')} (${t('proSoon')})</button>`}
+  <form id="unlockForm" class="unlock"><label for="code">${t('codeLabel')}</label><div class="row"><input type="text" id="code" autocomplete="off" dir="ltr" placeholder="NTPRO-…"><button class="btn" type="submit">${t('unlock')}</button></div><p id="codeMsg" aria-live="polite"></p></form></div>`;
+  $('#unlockForm').onsubmit = async e => { e.preventDefault(); const h = await sha256($('#code').value.trim().toUpperCase());
+    if (h === PRO_CODE_HASH) { localStorage.setItem('ntpro', h); applyPro(); pro(); } else { $('#codeMsg').className = 'err'; $('#codeMsg').textContent = t('badCode'); } };
 }
 
 const ROUTES = { '': home, word: toolWord, merge: toolMerge, split: toolSplit, compress: toolCompress, img: toolImg, qr: toolQr, pro };

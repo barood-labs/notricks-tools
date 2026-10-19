@@ -1,4 +1,6 @@
 import fs from 'fs'; import { BASE, TOOLS } from './content.mjs';
+import { PRO_CODE_HASH } from '../src/config.js';
+const PROJS = `<script>try{if(localStorage.getItem('ntpro')==='${PRO_CODE_HASH}')document.documentElement.classList.add('is-pro')}catch(e){}</script><style>.is-pro .ad-slot{display:none!important}</style>`;
 const out = 'public'; const esc = s => s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/"/g,'&quot;');
 const CSS = `body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Tahoma,"Noto Sans Arabic",Arial,sans-serif;background:#f8fafc;color:#0f172a;line-height:1.7}
 header{background:#134e4a;padding:12px 18px;display:flex;justify-content:space-between;align-items:center}header a{color:#fff;text-decoration:none;font-weight:700}
@@ -22,7 +24,7 @@ for (const t of TOOLS) for (const lang of ['en','ar']) {
 <title>${esc(c.title)}</title><meta name="description" content="${esc(c.desc)}"><link rel="canonical" href="${url}">
 <link rel="alternate" hreflang="${lang}" href="${url}"><link rel="alternate" hreflang="${other}" href="${BASE}${other}/${t.slug}/"><link rel="alternate" hreflang="x-default" href="${BASE}en/${t.slug}/">
 <meta property="og:title" content="${esc(c.title)}"><meta property="og:description" content="${esc(c.desc)}"><meta property="og:url" content="${url}"><meta property="og:type" content="website"><meta name="twitter:card" content="summary">
-<meta name="theme-color" content="#0f766e"><style>${CSS}</style>
+<meta name="theme-color" content="#0f766e"><style>${CSS}</style>${PROJS}
 ${ld.map(o=>`<script type="application/ld+json">${JSON.stringify(o)}</script>`).join('\n')}</head><body>
 <header><a href="../../">No-Tricks Tools${lang==='ar'?' · أدوات بلا خدع':''}</a><a href="../../${other}/${t.slug}/" lang="${other}">${L[lang].switch}</a></header>
 <main><p><a href="../../index.html?lang=${lang}">${L[lang].home}</a></p><h1>${c.h1}</h1><p>${c.intro}</p><a class="cta" href="${app}">${L[lang].open} →</a>
