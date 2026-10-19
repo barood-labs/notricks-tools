@@ -8,7 +8,7 @@ const browser = await chromium.launch({ executablePath: '/usr/bin/google-chrome'
 for (const lang of ['en','ar']) for (const vp of ['desktop','mobile']) {
   const ctx = await browser.newContext(vp==='mobile' ? { viewport:{width:390,height:844}, deviceScaleFactor:2, isMobile:true, hasTouch:true, acceptDownloads:true } : { viewport:{width:1280,height:860}, acceptDownloads:true });
   const page = await ctx.newPage(); const errs = []; page.on('pageerror', e => errs.push(e.message));
-  const tag = `${lang}_${vp}`; const shot = n => page.screenshot({ path: `${SH}${tag}_${n}.png`, fullPage: true });
+  const tag = `${lang}_${vp}`; const shot = n => page.screenshot({ path: `${SH}${process.env.SHOT_PREFIX||''}${tag}_${n}.png`, fullPage: true });
   const go = async h => { await page.goto(`${URL0}?lang=${lang}#/${h}`); await page.waitForLoadState('networkidle'); };
   const dl = async (sel, name) => { const [d] = await Promise.all([page.waitForEvent('download',{timeout:120000}), page.click(sel)]); const p = O+tag+'_'+name; await d.saveAs(p); return p; };
   const wait = async sel => page.waitForSelector(sel, { timeout: 120000 });
@@ -56,4 +56,4 @@ for (const lang of ['en','ar']) for (const vp of ['desktop','mobile']) {
   await ctx.close();
 }
 await browser.close();
-fs.writeFileSync('/workspace/apps_studio/notricks/qa/browser_results.json', JSON.stringify(res,null,1));
+fs.writeFileSync(process.env.RES||'/workspace/apps_studio/notricks/qa/browser_results.json', JSON.stringify(res,null,1));

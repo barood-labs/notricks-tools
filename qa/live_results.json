@@ -1,0 +1,582 @@
+[
+ {
+  "n": "en_desktop home dir",
+  "pass": true,
+  "d": ""
+ },
+ {
+  "n": "en_desktop 6 tool cards",
+  "pass": true,
+  "d": ""
+ },
+ {
+  "n": "en_desktop ad slots",
+  "pass": true,
+  "d": ""
+ },
+ {
+  "n": "en_desktop no horizontal overflow",
+  "pass": true,
+  "d": "scrollWidth=1280"
+ },
+ {
+  "n": "en_desktop pdf2word doc_en",
+  "pass": true,
+  "d": "/workspace/apps_studio/notricks/qa/out/en_desktop_doc_en.docx"
+ },
+ {
+  "n": "en_desktop pdf2word doc_ar2",
+  "pass": true,
+  "d": "/workspace/apps_studio/notricks/qa/out/en_desktop_doc_ar2.docx"
+ },
+ {
+  "n": "en_desktop pdf2word doc_ar_lo",
+  "pass": true,
+  "d": "/workspace/apps_studio/notricks/qa/out/en_desktop_doc_ar_lo.docx"
+ },
+ {
+  "n": "en_desktop pdf2word layout_en",
+  "pass": true,
+  "d": "/workspace/apps_studio/notricks/qa/out/en_desktop_layout_en.docx"
+ },
+ {
+  "n": "en_desktop pdf2word layout_ar",
+  "pass": true,
+  "d": "/workspace/apps_studio/notricks/qa/out/en_desktop_layout_ar.docx"
+ },
+ {
+  "n": "en_desktop pdf2word scanned -> honest no-text msg",
+  "pass": true,
+  "d": ""
+ },
+ {
+  "n": "en_desktop split rejects bad range",
+  "pass": true,
+  "d": ""
+ },
+ {
+  "n": "en_desktop split 2 files",
+  "pass": true,
+  "d": ""
+ },
+ {
+  "n": "en_desktop compress small text pdf handled",
+  "pass": true,
+  "d": "Before: 31 KB → After: 35 KB This PDF is already well optimized; the compressed version is not smaller. Keep your original."
+ },
+ {
+  "n": "en_desktop qr no error shown",
+  "pass": true,
+  "d": ""
+ },
+ {
+  "n": "en_desktop pro button live -> payhip",
+  "pass": true,
+  "d": ""
+ },
+ {
+  "n": "en_desktop landing pdf-to-word",
+  "pass": true,
+  "d": "WebApplication,FAQPage,HowTo,BreadcrumbList"
+ },
+ {
+  "n": "en_desktop landing merge-pdf",
+  "pass": true,
+  "d": "WebApplication,FAQPage,HowTo,BreadcrumbList"
+ },
+ {
+  "n": "en_desktop landing split-pdf",
+  "pass": true,
+  "d": "WebApplication,FAQPage,HowTo,BreadcrumbList"
+ },
+ {
+  "n": "en_desktop landing compress-pdf",
+  "pass": true,
+  "d": "WebApplication,FAQPage,HowTo,BreadcrumbList"
+ },
+ {
+  "n": "en_desktop landing image-to-pdf",
+  "pass": true,
+  "d": "WebApplication,FAQPage,HowTo,BreadcrumbList"
+ },
+ {
+  "n": "en_desktop landing qr-code-generator",
+  "pass": true,
+  "d": "WebApplication,FAQPage,HowTo,BreadcrumbList"
+ },
+ {
+  "n": "en_desktop landing CTA opens tool",
+  "pass": true,
+  "d": ""
+ },
+ {
+  "n": "en_desktop about.html",
+  "pass": true,
+  "d": ""
+ },
+ {
+  "n": "en_desktop contact.html",
+  "pass": true,
+  "d": ""
+ },
+ {
+  "n": "en_desktop terms.html",
+  "pass": true,
+  "d": ""
+ },
+ {
+  "n": "en_desktop sitemap.xml",
+  "pass": true,
+  "d": ""
+ },
+ {
+  "n": "en_desktop robots.txt",
+  "pass": true,
+  "d": ""
+ },
+ {
+  "n": "en_desktop privacy page",
+  "pass": true,
+  "d": ""
+ },
+ {
+  "n": "en_desktop no JS errors",
+  "pass": true,
+  "d": ""
+ },
+ {
+  "n": "en_mobile home dir",
+  "pass": true,
+  "d": ""
+ },
+ {
+  "n": "en_mobile 6 tool cards",
+  "pass": true,
+  "d": ""
+ },
+ {
+  "n": "en_mobile ad slots",
+  "pass": true,
+  "d": ""
+ },
+ {
+  "n": "en_mobile no horizontal overflow",
+  "pass": true,
+  "d": "scrollWidth=390"
+ },
+ {
+  "n": "en_mobile pdf2word doc_en",
+  "pass": true,
+  "d": "/workspace/apps_studio/notricks/qa/out/en_mobile_doc_en.docx"
+ },
+ {
+  "n": "en_mobile pdf2word doc_ar2",
+  "pass": true,
+  "d": "/workspace/apps_studio/notricks/qa/out/en_mobile_doc_ar2.docx"
+ },
+ {
+  "n": "en_mobile pdf2word doc_ar_lo",
+  "pass": true,
+  "d": "/workspace/apps_studio/notricks/qa/out/en_mobile_doc_ar_lo.docx"
+ },
+ {
+  "n": "en_mobile pdf2word layout_en",
+  "pass": true,
+  "d": "/workspace/apps_studio/notricks/qa/out/en_mobile_layout_en.docx"
+ },
+ {
+  "n": "en_mobile pdf2word layout_ar",
+  "pass": true,
+  "d": "/workspace/apps_studio/notricks/qa/out/en_mobile_layout_ar.docx"
+ },
+ {
+  "n": "en_mobile pdf2word scanned -> honest no-text msg",
+  "pass": true,
+  "d": ""
+ },
+ {
+  "n": "en_mobile split rejects bad range",
+  "pass": true,
+  "d": ""
+ },
+ {
+  "n": "en_mobile split 2 files",
+  "pass": true,
+  "d": ""
+ },
+ {
+  "n": "en_mobile compress small text pdf handled",
+  "pass": true,
+  "d": "Before: 31 KB → After: 35 KB This PDF is already well optimized; the compressed version is not smaller. Keep your original."
+ },
+ {
+  "n": "en_mobile qr no error shown",
+  "pass": true,
+  "d": ""
+ },
+ {
+  "n": "en_mobile pro button live -> payhip",
+  "pass": true,
+  "d": ""
+ },
+ {
+  "n": "en_mobile landing pdf-to-word",
+  "pass": true,
+  "d": "WebApplication,FAQPage,HowTo,BreadcrumbList"
+ },
+ {
+  "n": "en_mobile landing merge-pdf",
+  "pass": true,
+  "d": "WebApplication,FAQPage,HowTo,BreadcrumbList"
+ },
+ {
+  "n": "en_mobile landing split-pdf",
+  "pass": true,
+  "d": "WebApplication,FAQPage,HowTo,BreadcrumbList"
+ },
+ {
+  "n": "en_mobile landing compress-pdf",
+  "pass": true,
+  "d": "WebApplication,FAQPage,HowTo,BreadcrumbList"
+ },
+ {
+  "n": "en_mobile landing image-to-pdf",
+  "pass": true,
+  "d": "WebApplication,FAQPage,HowTo,BreadcrumbList"
+ },
+ {
+  "n": "en_mobile landing qr-code-generator",
+  "pass": true,
+  "d": "WebApplication,FAQPage,HowTo,BreadcrumbList"
+ },
+ {
+  "n": "en_mobile landing CTA opens tool",
+  "pass": true,
+  "d": ""
+ },
+ {
+  "n": "en_mobile about.html",
+  "pass": true,
+  "d": ""
+ },
+ {
+  "n": "en_mobile contact.html",
+  "pass": true,
+  "d": ""
+ },
+ {
+  "n": "en_mobile terms.html",
+  "pass": true,
+  "d": ""
+ },
+ {
+  "n": "en_mobile sitemap.xml",
+  "pass": true,
+  "d": ""
+ },
+ {
+  "n": "en_mobile robots.txt",
+  "pass": true,
+  "d": ""
+ },
+ {
+  "n": "en_mobile privacy page",
+  "pass": true,
+  "d": ""
+ },
+ {
+  "n": "en_mobile no JS errors",
+  "pass": true,
+  "d": ""
+ },
+ {
+  "n": "ar_desktop home dir",
+  "pass": true,
+  "d": ""
+ },
+ {
+  "n": "ar_desktop 6 tool cards",
+  "pass": true,
+  "d": ""
+ },
+ {
+  "n": "ar_desktop ad slots",
+  "pass": true,
+  "d": ""
+ },
+ {
+  "n": "ar_desktop no horizontal overflow",
+  "pass": true,
+  "d": "scrollWidth=1280"
+ },
+ {
+  "n": "ar_desktop pdf2word doc_en",
+  "pass": true,
+  "d": "/workspace/apps_studio/notricks/qa/out/ar_desktop_doc_en.docx"
+ },
+ {
+  "n": "ar_desktop pdf2word doc_ar2",
+  "pass": true,
+  "d": "/workspace/apps_studio/notricks/qa/out/ar_desktop_doc_ar2.docx"
+ },
+ {
+  "n": "ar_desktop pdf2word doc_ar_lo",
+  "pass": true,
+  "d": "/workspace/apps_studio/notricks/qa/out/ar_desktop_doc_ar_lo.docx"
+ },
+ {
+  "n": "ar_desktop pdf2word layout_en",
+  "pass": true,
+  "d": "/workspace/apps_studio/notricks/qa/out/ar_desktop_layout_en.docx"
+ },
+ {
+  "n": "ar_desktop pdf2word layout_ar",
+  "pass": true,
+  "d": "/workspace/apps_studio/notricks/qa/out/ar_desktop_layout_ar.docx"
+ },
+ {
+  "n": "ar_desktop pdf2word scanned -> honest no-text msg",
+  "pass": true,
+  "d": ""
+ },
+ {
+  "n": "ar_desktop split rejects bad range",
+  "pass": true,
+  "d": ""
+ },
+ {
+  "n": "ar_desktop split 2 files",
+  "pass": true,
+  "d": ""
+ },
+ {
+  "n": "ar_desktop compress small text pdf handled",
+  "pass": true,
+  "d": "قبل: 31 KB → بعد: 35 KB هذا الملف مضغوط جيدًا بالفعل، والنسخة المضغوطة ليست أصغر منه. احتفظ بملفك الأصلي."
+ },
+ {
+  "n": "ar_desktop qr no error shown",
+  "pass": true,
+  "d": ""
+ },
+ {
+  "n": "ar_desktop pro button live -> payhip",
+  "pass": true,
+  "d": ""
+ },
+ {
+  "n": "ar_desktop landing pdf-to-word",
+  "pass": true,
+  "d": "WebApplication,FAQPage,HowTo,BreadcrumbList"
+ },
+ {
+  "n": "ar_desktop landing merge-pdf",
+  "pass": true,
+  "d": "WebApplication,FAQPage,HowTo,BreadcrumbList"
+ },
+ {
+  "n": "ar_desktop landing split-pdf",
+  "pass": true,
+  "d": "WebApplication,FAQPage,HowTo,BreadcrumbList"
+ },
+ {
+  "n": "ar_desktop landing compress-pdf",
+  "pass": true,
+  "d": "WebApplication,FAQPage,HowTo,BreadcrumbList"
+ },
+ {
+  "n": "ar_desktop landing image-to-pdf",
+  "pass": true,
+  "d": "WebApplication,FAQPage,HowTo,BreadcrumbList"
+ },
+ {
+  "n": "ar_desktop landing qr-code-generator",
+  "pass": true,
+  "d": "WebApplication,FAQPage,HowTo,BreadcrumbList"
+ },
+ {
+  "n": "ar_desktop landing CTA opens tool",
+  "pass": true,
+  "d": ""
+ },
+ {
+  "n": "ar_desktop about.html",
+  "pass": true,
+  "d": ""
+ },
+ {
+  "n": "ar_desktop contact.html",
+  "pass": true,
+  "d": ""
+ },
+ {
+  "n": "ar_desktop terms.html",
+  "pass": true,
+  "d": ""
+ },
+ {
+  "n": "ar_desktop sitemap.xml",
+  "pass": true,
+  "d": ""
+ },
+ {
+  "n": "ar_desktop robots.txt",
+  "pass": true,
+  "d": ""
+ },
+ {
+  "n": "ar_desktop privacy page",
+  "pass": true,
+  "d": ""
+ },
+ {
+  "n": "ar_desktop no JS errors",
+  "pass": true,
+  "d": ""
+ },
+ {
+  "n": "ar_mobile home dir",
+  "pass": true,
+  "d": ""
+ },
+ {
+  "n": "ar_mobile 6 tool cards",
+  "pass": true,
+  "d": ""
+ },
+ {
+  "n": "ar_mobile ad slots",
+  "pass": true,
+  "d": ""
+ },
+ {
+  "n": "ar_mobile no horizontal overflow",
+  "pass": true,
+  "d": "scrollWidth=390"
+ },
+ {
+  "n": "ar_mobile pdf2word doc_en",
+  "pass": true,
+  "d": "/workspace/apps_studio/notricks/qa/out/ar_mobile_doc_en.docx"
+ },
+ {
+  "n": "ar_mobile pdf2word doc_ar2",
+  "pass": true,
+  "d": "/workspace/apps_studio/notricks/qa/out/ar_mobile_doc_ar2.docx"
+ },
+ {
+  "n": "ar_mobile pdf2word doc_ar_lo",
+  "pass": true,
+  "d": "/workspace/apps_studio/notricks/qa/out/ar_mobile_doc_ar_lo.docx"
+ },
+ {
+  "n": "ar_mobile pdf2word layout_en",
+  "pass": true,
+  "d": "/workspace/apps_studio/notricks/qa/out/ar_mobile_layout_en.docx"
+ },
+ {
+  "n": "ar_mobile pdf2word layout_ar",
+  "pass": true,
+  "d": "/workspace/apps_studio/notricks/qa/out/ar_mobile_layout_ar.docx"
+ },
+ {
+  "n": "ar_mobile pdf2word scanned -> honest no-text msg",
+  "pass": true,
+  "d": ""
+ },
+ {
+  "n": "ar_mobile split rejects bad range",
+  "pass": true,
+  "d": ""
+ },
+ {
+  "n": "ar_mobile split 2 files",
+  "pass": true,
+  "d": ""
+ },
+ {
+  "n": "ar_mobile compress small text pdf handled",
+  "pass": true,
+  "d": "قبل: 31 KB → بعد: 35 KB هذا الملف مضغوط جيدًا بالفعل، والنسخة المضغوطة ليست أصغر منه. احتفظ بملفك الأصلي."
+ },
+ {
+  "n": "ar_mobile qr no error shown",
+  "pass": true,
+  "d": ""
+ },
+ {
+  "n": "ar_mobile pro button live -> payhip",
+  "pass": true,
+  "d": ""
+ },
+ {
+  "n": "ar_mobile landing pdf-to-word",
+  "pass": true,
+  "d": "WebApplication,FAQPage,HowTo,BreadcrumbList"
+ },
+ {
+  "n": "ar_mobile landing merge-pdf",
+  "pass": true,
+  "d": "WebApplication,FAQPage,HowTo,BreadcrumbList"
+ },
+ {
+  "n": "ar_mobile landing split-pdf",
+  "pass": true,
+  "d": "WebApplication,FAQPage,HowTo,BreadcrumbList"
+ },
+ {
+  "n": "ar_mobile landing compress-pdf",
+  "pass": true,
+  "d": "WebApplication,FAQPage,HowTo,BreadcrumbList"
+ },
+ {
+  "n": "ar_mobile landing image-to-pdf",
+  "pass": true,
+  "d": "WebApplication,FAQPage,HowTo,BreadcrumbList"
+ },
+ {
+  "n": "ar_mobile landing qr-code-generator",
+  "pass": true,
+  "d": "WebApplication,FAQPage,HowTo,BreadcrumbList"
+ },
+ {
+  "n": "ar_mobile landing CTA opens tool",
+  "pass": true,
+  "d": ""
+ },
+ {
+  "n": "ar_mobile about.html",
+  "pass": true,
+  "d": ""
+ },
+ {
+  "n": "ar_mobile contact.html",
+  "pass": true,
+  "d": ""
+ },
+ {
+  "n": "ar_mobile terms.html",
+  "pass": true,
+  "d": ""
+ },
+ {
+  "n": "ar_mobile sitemap.xml",
+  "pass": true,
+  "d": ""
+ },
+ {
+  "n": "ar_mobile robots.txt",
+  "pass": true,
+  "d": ""
+ },
+ {
+  "n": "ar_mobile privacy page",
+  "pass": true,
+  "d": ""
+ },
+ {
+  "n": "ar_mobile no JS errors",
+  "pass": true,
+  "d": ""
+ }
+]
