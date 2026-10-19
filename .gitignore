@@ -1,0 +1,5 @@
+node_modules/
+dist/
+qa/out/
+qa/samples/*.pdf
+qa/preview.log
