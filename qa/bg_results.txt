@@ -1,0 +1,94 @@
+PASS ar_mobile rtl 
+PASS ar_mobile hair.jpg processed تم! (10.3 s, 1920×2877px) wall=18492ms
+PASS ar_mobile hair.jpg full-res mask {"w":1920,"h":2877,"fg":0.768045779747422,"soft":0.18795928194878925}
+PASS ar_mobile hair.jpg plausible fg 0.768
+PASS ar_mobile hair.jpg none png 
+PASS ar_mobile hair.jpg product png 
+PASS ar_mobile hair.jpg id png 
+PASS ar_mobile hair.jpg sticker png 
+PASS ar_mobile hair.jpg brush erases 
+PASS ar_mobile hair.jpg undo 
+PASS ar_mobile dog.jpg processed تم! (10.4 s, 1920×2045px) wall=10400ms
+PASS ar_mobile dog.jpg full-res mask {"w":1920,"h":2045,"fg":0.4037958435207824,"soft":0.12181311124694376}
+PASS ar_mobile dog.jpg plausible fg 0.404
+PASS ar_mobile dog.jpg none png 
+PASS ar_mobile dog.jpg product png 
+PASS ar_mobile dog.jpg id png 
+PASS ar_mobile dog.jpg sticker png 
+PASS ar_mobile dog.jpg brush erases 
+PASS ar_mobile dog.jpg undo 
+PASS ar_mobile shoe.jpg processed تم! (10.1 s, 1920×2560px) wall=10158ms
+PASS ar_mobile shoe.jpg full-res mask {"w":1920,"h":2560,"fg":0.22210795084635418,"soft":0.11263387044270834}
+PASS ar_mobile shoe.jpg plausible fg 0.222
+PASS ar_mobile shoe.jpg none png 
+PASS ar_mobile shoe.jpg product png 
+PASS ar_mobile shoe.jpg id png 
+PASS ar_mobile shoe.jpg sticker png 
+PASS ar_mobile shoe.jpg brush erases 
+PASS ar_mobile shoe.jpg undo 
+PASS ar_mobile batch gated for free users 
+PASS ar_mobile pro batch zip 
+PASS ar_mobile no page errors 
+PASS es_desktop rtl 
+PASS es_desktop hair.jpg processed Done! (10.3 s, 1920×2877px) wall=18556ms
+PASS es_desktop hair.jpg full-res mask {"w":1920,"h":2877,"fg":0.768045779747422,"soft":0.18795928194878925}
+PASS es_desktop hair.jpg plausible fg 0.768
+PASS es_desktop hair.jpg none png 
+PASS es_desktop hair.jpg product png 
+PASS es_desktop hair.jpg id png 
+PASS es_desktop hair.jpg sticker png 
+PASS es_desktop hair.jpg brush erases 
+PASS es_desktop hair.jpg undo 
+PASS es_desktop dog.jpg processed Done! (10.0 s, 1920×2045px) wall=10012ms
+PASS es_desktop dog.jpg full-res mask {"w":1920,"h":2045,"fg":0.4037958435207824,"soft":0.12181311124694376}
+PASS es_desktop dog.jpg plausible fg 0.404
+PASS es_desktop dog.jpg none png 
+PASS es_desktop dog.jpg product png 
+PASS es_desktop dog.jpg id png 
+PASS es_desktop dog.jpg sticker png 
+PASS es_desktop dog.jpg brush erases 
+PASS es_desktop dog.jpg undo 
+PASS es_desktop shoe.jpg processed Done! (10.1 s, 1920×2560px) wall=10164ms
+PASS es_desktop shoe.jpg full-res mask {"w":1920,"h":2560,"fg":0.22210795084635418,"soft":0.11263387044270834}
+PASS es_desktop shoe.jpg plausible fg 0.222
+PASS es_desktop shoe.jpg none png 
+PASS es_desktop shoe.jpg product png 
+PASS es_desktop shoe.jpg id png 
+PASS es_desktop shoe.jpg sticker png 
+PASS es_desktop shoe.jpg brush erases 
+PASS es_desktop shoe.jpg undo 
+PASS es_desktop batch gated for free users 
+PASS es_desktop pro batch zip 
+PASS es_desktop no page errors 
+PASS en_mobile rtl 
+PASS en_mobile hair.jpg processed Done! (10.7 s, 1920×2877px) wall=18998ms
+PASS en_mobile hair.jpg full-res mask {"w":1920,"h":2877,"fg":0.768045779747422,"soft":0.18795928194878925}
+PASS en_mobile hair.jpg plausible fg 0.768
+PASS en_mobile hair.jpg none png 
+PASS en_mobile hair.jpg product png 
+PASS en_mobile hair.jpg id png 
+PASS en_mobile hair.jpg sticker png 
+PASS en_mobile hair.jpg brush erases 
+PASS en_mobile hair.jpg undo 
+PASS en_mobile dog.jpg processed Done! (10.3 s, 1920×2045px) wall=10292ms
+PASS en_mobile dog.jpg full-res mask {"w":1920,"h":2045,"fg":0.4037958435207824,"soft":0.12181311124694376}
+PASS en_mobile dog.jpg plausible fg 0.404
+PASS en_mobile dog.jpg none png 
+PASS en_mobile dog.jpg product png 
+PASS en_mobile dog.jpg id png 
+PASS en_mobile dog.jpg sticker png 
+PASS en_mobile dog.jpg brush erases 
+PASS en_mobile dog.jpg undo 
+PASS en_mobile shoe.jpg processed Done! (10.2 s, 1920×2560px) wall=10256ms
+PASS en_mobile shoe.jpg full-res mask {"w":1920,"h":2560,"fg":0.22210795084635418,"soft":0.11263387044270834}
+PASS en_mobile shoe.jpg plausible fg 0.222
+PASS en_mobile shoe.jpg none png 
+PASS en_mobile shoe.jpg product png 
+PASS en_mobile shoe.jpg id png 
+PASS en_mobile shoe.jpg sticker png 
+PASS en_mobile shoe.jpg brush erases 
+PASS en_mobile shoe.jpg undo 
+PASS en_mobile batch gated for free users 
+PASS en_mobile pro batch zip 
+PASS en_mobile no page errors 
+93 passed, 0 failed

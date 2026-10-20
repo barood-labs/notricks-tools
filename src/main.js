@@ -299,8 +299,8 @@ function toolBg(){
     <h3>${t('touchUp')}</h3><p><small>${t('touchHint')}</small></p>
     <div class="row"><div><label><input type="radio" name="bm" value="erase" checked> ${t('erase')}</label> <label><input type="radio" name="bm" value="restore"> ${t('restore')}</label></div>
      <div><label for="bs">${t('brush')}</label><input type="range" id="bs" min="4" max="200" value="40"></div><div><button class="btn sm" id="undo">↶ ${t('undo')}</button></div></div>
-    <canvas id="cv" class="checker" style="width:100%;max-width:720px;touch-action:none;border-radius:8px"></canvas>
     <p><button class="btn" id="savePng">⬇ PNG</button> <button class="btn" id="saveJpg">⬇ JPG</button> <span id="dims"></span></p>
+    <canvas id="cv" class="checker" style="display:block;width:100%;max-width:720px;height:auto;touch-action:none;border-radius:8px"></canvas>
    </div>
    <div id="batch" hidden><h3>${t('batchTitle')}</h3><p id="batchMsg"></p></div>`);
   const info = async () => { B = B || await loadBg(); const p = await B.plan($('#mdl').value); $('#mdlInfo').textContent = `${p.label} · ${p.device === 'webgpu' ? 'WebGPU' : 'WASM (CPU)'} · ${t('bgDownload')} ~${p.mb} MB${p.downgraded ? ' · ' + t('bgNoGpuBest') : ''}`; };

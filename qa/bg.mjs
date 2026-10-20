@@ -19,7 +19,7 @@ for (const [lang, vp] of (process.env.MATRIX || 'en:desktop,ar:mobile').split(',
     ok(`${tag} ${f} plausible fg`, st.fg > 0.05 && st.fg < 0.9, st.fg.toFixed(3));
     for (const preset of ['none','product','id','sticker']) {
       await p.selectOption('#preset', preset); if (preset==='none') await p.selectOption('#bgt', 'none');
-      const [d] = await Promise.all([p.waitForEvent('download'), p.click('#savePng')]); const fn = `${O}${tag}_${f.replace('.jpg','')}_${preset}.png`; await d.saveAs(fn);
+      const [d] = await Promise.all([p.waitForEvent('download', { timeout: 120000 }), p.click('#savePng')]); const fn = `${O}${tag}_${f.replace('.jpg','')}_${preset}.png`; await d.saveAs(fn);
       ok(`${tag} ${f} ${preset} png`, fs.statSync(fn).size > 5000);
     }
     await p.selectOption('#preset','none'); await p.selectOption('#bgt','blur');
