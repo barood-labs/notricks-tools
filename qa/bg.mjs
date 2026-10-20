@@ -26,7 +26,9 @@ for (const [lang, vp] of (process.env.MATRIX || 'en:desktop,ar:mobile').split(',
     await p.screenshot({ path: `${O}${tag}_${f}_blur_screen.png`, fullPage: false });
     // brush: erase at center then undo
     const before = await p.evaluate(() => window.__bg.cur.alpha.reduce((s,v)=>s+v,0));
-    const bx = await p.locator('#cv').boundingBox(); await p.mouse.move(bx.x+bx.width/2, bx.y+bx.height/2); await p.mouse.down(); await p.mouse.move(bx.x+bx.width/2+30, bx.y+bx.height/2+10); await p.mouse.up();
+    const fp = await p.evaluate(() => { const c = window.__bg.cur, W = c.src.width; let best = 0; for (let i = 0; i < c.alpha.length; i += 997) if (c.alpha[i] > 250) { best = i; break; } return { fx: (best % W) / W, fy: Math.floor(best / W) / c.src.height }; });
+    await p.evaluate(fy => { const cv = document.querySelector('#cv'), b = cv.getBoundingClientRect(); window.scrollBy(0, b.top + b.height * fy - innerHeight / 2); }, fp.fy);
+    const bx = await p.locator('#cv').boundingBox(); const X = bx.x + bx.width * fp.fx, Y = bx.y + bx.height * fp.fy; await p.mouse.move(X, Y); await p.mouse.down(); await p.mouse.move(X + 8, Y + 4); await p.mouse.up();
     const after = await p.evaluate(() => window.__bg.cur.alpha.reduce((s,v)=>s+v,0)); ok(`${tag} ${f} brush erases`, after < before);
     await p.click('#undo'); const und = await p.evaluate(() => window.__bg.cur.alpha.reduce((s,v)=>s+v,0)); ok(`${tag} ${f} undo`, und === before || und > after);
     await p.selectOption('#bgt','none');

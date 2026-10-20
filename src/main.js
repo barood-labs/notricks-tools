@@ -303,7 +303,7 @@ function toolBg(){
     <p><button class="btn" id="savePng">⬇ PNG</button> <button class="btn" id="saveJpg">⬇ JPG</button> <span id="dims"></span></p>
    </div>
    <div id="batch" hidden><h3>${t('batchTitle')}</h3><p id="batchMsg"></p></div>`);
-  const info = async () => { B = B || await loadBg(); const p = await B.plan($('#mdl').value); $('#mdlInfo').textContent = `${p.gpu ? 'WebGPU' : 'WASM (CPU)'} · ${t('bgDownload')} ~${p.mb} MB${p.variant !== $('#mdl').value ? ' · ' + t('bgNoGpuBest') : ''}`; };
+  const info = async () => { B = B || await loadBg(); const p = await B.plan($('#mdl').value); $('#mdlInfo').textContent = `${p.label} · ${p.device === 'webgpu' ? 'WebGPU' : 'WASM (CPU)'} · ${t('bgDownload')} ~${p.mb} MB${p.downgraded ? ' · ' + t('bgNoGpuBest') : ''}`; };
   $('#mdl').onchange = () => { M = null; info(); }; info();
   const ensure = async () => { B = B || await loadBg(); if (!M) { out(`<p>${t('bgLoading')}</p><progress id="pg" max="1" value="0" style="width:100%"></progress>`); M = await B.load($('#mdl').value, (l, n) => { const pg = $('#pg'); if (pg) pg.value = l / n; }); } return M; };
   const toCanvas = async f => { const b = await createImageBitmap(f, { imageOrientation: 'from-image' }); const c = document.createElement('canvas'); c.width = b.width; c.height = b.height; c.getContext('2d').drawImage(b, 0, 0); return c; };
@@ -358,10 +358,10 @@ function toolBg(){
     const b = await blobOf(src, type); const a = document.createElement('a'); a.href = URL.createObjectURL(b); a.download = baseName({ name: cur.name }) + (type === 'image/png' ? '_cutout.png' : '_cutout.jpg'); document.body.appendChild(a); a.click(); a.remove(); };
   $('#savePng').onclick = () => save('image/png'); $('#saveJpg').onclick = () => save('image/jpeg');
   const run = async files => { files = files.filter(f => f.type.startsWith('image/')); if (!files.length) return out(`<p class="err">${t('needImg')}</p>`);
-    if (files.length > 1 && !isPro()) { out(`<p class="err">${t('batchPro')} <a href="#/pro">${t('proBtn')}</a></p>`); files = files.slice(0, 1); }
+    let gate = ''; if (files.length > 1 && !isPro()) { gate = `<p class="err" id="gate">${t('batchPro')} <a href="#/pro">${t('proBtn')}</a></p>`; files = files.slice(0, 1); }
     try { const m = await ensure();
       if (files.length === 1) { const t0 = performance.now(); out(`<p>${t('processing')}</p>`); const src = await toCanvas(files[0]); let alpha; try { alpha = await B.segment(m, src); } catch (e) { if (m.device !== 'webgpu') throw e; console.warn('WebGPU run failed, retrying on CPU', e); B.disableGpu(); out(`<p>${t('processing')}</p>`); location.reload(); return; }
-        cur = { src, alpha, name: files[0].name }; undo = []; $('#ed').hidden = false; render(); out(`<p class="ok">${t('done')} (${((performance.now()-t0)/1000).toFixed(1)} s, ${src.width}×${src.height}px)</p>`); return; }
+        cur = { src, alpha, name: files[0].name }; undo = []; $('#ed').hidden = false; render(); out(`${gate}<p class="ok">${t('done')} (${((performance.now()-t0)/1000).toFixed(1)} s, ${src.width}×${src.height}px)</p>`); return; }
       const JSZip = (await import('jszip')).default, zip = new JSZip(); $('#batch').hidden = false;
       for (let i = 0; i < files.length; i++) { $('#batchMsg').textContent = `${i+1} / ${files.length}…`; const src = await toCanvas(files[i]); const item = { src, alpha: await B.segment(m, src) };
         const c = compose(item, opts()); zip.file(baseName(files[i]) + '_cutout.png', await blobOf(c, 'image/png')); }
