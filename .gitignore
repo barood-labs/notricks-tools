@@ -7,3 +7,5 @@ promo/
 qa/*.log
 payhip/
 public/vendor/
+qa/bg/*.jpg
+qa/bg/out/

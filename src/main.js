@@ -28,7 +28,7 @@ function applyLang(){
 }
 $('#langBtn').onclick = () => { lang = lang==='ar'?'en':'ar'; applyLang(); };
 
-const TOOLS = [['word','📝'],['merge','🧩'],['split','✂️'],['compress','🗜️'],['img','🖼️'],['scan','📷'],['qr','🔳']];
+const TOOLS = [['word','📝'],['merge','🧩'],['split','✂️'],['compress','🗜️'],['img','🖼️'],['scan','📷'],['bg','✨'],['qr','🔳']];
 function home(){
   app.innerHTML = `<section class="hero"><h1>${t('heroTitle')}</h1><p>${t('heroSub')}</p>
   <div class="badges">${[1,2,3,4].map(i=>`<span>✓ ${t('badge'+i)}</span>`).join('')}</div></section>
@@ -278,6 +278,99 @@ function toolScan(){
 }
 const loadScanner = () => import('./scanner.js');
 
+
+/* ---------- Background remover ---------- */
+const loadBg = () => import('./bgremove.js');
+function toolBg(){
+  let B = null, M = null, cur = null; // cur: {src canvas, alpha Uint8, name}
+  let bgImg = null;
+  shell('bg', `<p class="note">${t('bgNote')}</p>
+   <div class="row"><div><label for="mdl">${t('bgModel')}</label><select id="mdl"><option value="fast">${t('bgFast')}</option><option value="best">${t('bgBest')}</option></select></div></div>
+   <p><small id="mdlInfo"></small></p>
+   ${dropZone('f', true, 'image/*')}
+   <div id="ed" hidden>
+    <div class="row">
+     <div><label for="preset">${t('bgPreset')}</label><select id="preset"><option value="none">${t('pNone')}</option><option value="product">${t('pProduct')}</option><option value="id">${t('pId')}</option><option value="sticker">${t('pSticker')}</option></select></div>
+     <div id="idw" hidden><label for="idsz">${t('idSize')}</label><select id="idsz"><option value="600x600">2×2 in (US) 600×600</option><option value="413x531">35×45 mm (UK/EU/Schengen) 413×531</option><option value="472x591">40×50 mm 472×591</option><option value="390x567">33×48 mm (China/Gulf visas) 390×567</option></select></div>
+     <div><label for="bgt">${t('bgType')}</label><select id="bgt"><option value="none">${t('bgTransparent')}</option><option value="color">${t('bgColor')}</option><option value="image">${t('bgImage')}</option><option value="blur">${t('bgBlur')}</option></select></div>
+     <div><label for="bgc">${t('fg')}</label><input type="color" id="bgc" value="#ffffff"></div>
+     <div><label for="bgi">${t('bgImage')}</label><input type="file" id="bgi" accept="image/*"></div>
+    </div>
+    <h3>${t('touchUp')}</h3><p><small>${t('touchHint')}</small></p>
+    <div class="row"><div><label><input type="radio" name="bm" value="erase" checked> ${t('erase')}</label> <label><input type="radio" name="bm" value="restore"> ${t('restore')}</label></div>
+     <div><label for="bs">${t('brush')}</label><input type="range" id="bs" min="4" max="200" value="40"></div><div><button class="btn sm" id="undo">↶ ${t('undo')}</button></div></div>
+    <canvas id="cv" class="checker" style="width:100%;max-width:720px;touch-action:none;border-radius:8px"></canvas>
+    <p><button class="btn" id="savePng">⬇ PNG</button> <button class="btn" id="saveJpg">⬇ JPG</button> <span id="dims"></span></p>
+   </div>
+   <div id="batch" hidden><h3>${t('batchTitle')}</h3><p id="batchMsg"></p></div>`);
+  const info = async () => { B = B || await loadBg(); const p = await B.plan($('#mdl').value); $('#mdlInfo').textContent = `${p.gpu ? 'WebGPU' : 'WASM (CPU)'} · ${t('bgDownload')} ~${p.mb} MB${p.variant !== $('#mdl').value ? ' · ' + t('bgNoGpuBest') : ''}`; };
+  $('#mdl').onchange = () => { M = null; info(); }; info();
+  const ensure = async () => { B = B || await loadBg(); if (!M) { out(`<p>${t('bgLoading')}</p><progress id="pg" max="1" value="0" style="width:100%"></progress>`); M = await B.load($('#mdl').value, (l, n) => { const pg = $('#pg'); if (pg) pg.value = l / n; }); } return M; };
+  const toCanvas = async f => { const b = await createImageBitmap(f, { imageOrientation: 'from-image' }); const c = document.createElement('canvas'); c.width = b.width; c.height = b.height; c.getContext('2d').drawImage(b, 0, 0); return c; };
+  const cutout = (src, a) => { const c = document.createElement('canvas'); c.width = src.width; c.height = src.height; const g = c.getContext('2d'); g.drawImage(src, 0, 0); const d = g.getImageData(0, 0, c.width, c.height); for (let i = 0; i < a.length; i++) d.data[i*4+3] = a[i]; g.putImageData(d, 0, 0); return c; };
+  const bbox = (a, w, h) => { let x0 = w, y0 = h, x1 = -1, y1 = -1; for (let y = 0; y < h; y++) for (let x = 0; x < w; x++) if (a[y*w+x] > 24) { if (x < x0) x0 = x; if (x > x1) x1 = x; if (y < y0) y0 = y; if (y > y1) y1 = y; } return x1 < 0 ? { x: 0, y: 0, w, h } : { x: x0, y: y0, w: x1 - x0 + 1, h: y1 - y0 + 1 }; };
+  // Compose final full-resolution output according to preset + background.
+  function compose(item, opts){
+    const { src, alpha } = item, W = src.width, H = src.height, cut = cutout(src, alpha), preset = opts.preset;
+    let bt = opts.bgt, col = opts.color;
+    if (preset === 'product') { bt = 'color'; col = '#ffffff'; }
+    if (preset === 'id') { bt = 'color'; }
+    if (preset === 'sticker') bt = 'none';
+    const fill = (g, w, h, dx = 0, dy = 0, sw = W, sh = H) => {
+      if (bt === 'color') { g.fillStyle = col; g.fillRect(0, 0, w, h); }
+      else if (bt === 'image' && bgImg) { const s = Math.max(w / bgImg.width, h / bgImg.height); g.drawImage(bgImg, (w - bgImg.width*s)/2, (h - bgImg.height*s)/2, bgImg.width*s, bgImg.height*s); }
+      else if (bt === 'blur') { g.filter = `blur(${Math.round(Math.max(w, h) / 80)}px)`; g.drawImage(src, dx, dy, sw, sh); g.filter = 'none'; }
+    };
+    const c = document.createElement('canvas'), bb = bbox(alpha, W, H);
+    if (preset === 'product') { // square, white, subject centred with 8% margin, at least original resolution
+      const S = Math.max(bb.w, bb.h) / 0.84; c.width = c.height = Math.round(S); const g = c.getContext('2d'); fill(g, c.width, c.height);
+      g.drawImage(cut, bb.x, bb.y, bb.w, bb.h, (S - bb.w)/2, (S - bb.h)/2, bb.w, bb.h); return c; }
+    if (preset === 'id') { const [w, h] = opts.idsz.split('x').map(Number); c.width = w; c.height = h; const g = c.getContext('2d'); fill(g, w, h);
+      // head-and-shoulders: subject width fills ~80%, top of head ~8% from top
+      const s = Math.min(w * 0.8 / bb.w, h * 0.92 / bb.h); g.imageSmoothingQuality = 'high'; g.drawImage(cut, bb.x, bb.y, bb.w, bb.h, (w - bb.w*s)/2, h*0.08, bb.w*s, bb.h*s); return c; }
+    if (preset === 'sticker') { const r = Math.max(4, Math.round(Math.max(bb.w, bb.h) / 60)), pad = r * 2;
+      c.width = bb.w + pad*2; c.height = bb.h + pad*2; const g = c.getContext('2d');
+      const sil = document.createElement('canvas'); sil.width = c.width; sil.height = c.height; const sg = sil.getContext('2d');
+      sg.drawImage(cut, bb.x, bb.y, bb.w, bb.h, pad, pad, bb.w, bb.h); sg.globalCompositeOperation = 'source-in'; sg.fillStyle = '#ffffff'; sg.fillRect(0, 0, c.width, c.height);
+      for (let k = 0; k < 24; k++) { const an = k / 24 * Math.PI * 2; g.drawImage(sil, Math.cos(an) * r, Math.sin(an) * r); }
+      g.drawImage(cut, bb.x, bb.y, bb.w, bb.h, pad, pad, bb.w, bb.h); return c; }
+    c.width = W; c.height = H; const g = c.getContext('2d'); fill(g, W, H); g.drawImage(cut, 0, 0); return c;
+  }
+  const opts = () => ({ preset: $('#preset').value, bgt: $('#bgt').value, color: $('#bgc').value, idsz: $('#idsz').value });
+  const cv = $('#cv'), ctx = cv.getContext('2d'); let undo = [];
+  function render(){ if (!cur) return; const o = opts(); $('#idw').hidden = o.preset !== 'id';
+    const r = o.preset === 'none' ? compose(cur, o) : compose(cur, o); cv.width = r.width; cv.height = r.height; ctx.drawImage(r, 0, 0); $('#dims').textContent = `${r.width}×${r.height}px`; }
+  ['preset','bgt','bgc','idsz'].forEach(id => $('#'+id).addEventListener('input', render));
+  $('#bgi').onchange = async () => { const f = $('#bgi').files[0]; if (f) { bgImg = await createImageBitmap(f); $('#bgt').value = 'image'; render(); } };
+  // touch-up brush works on the mask in source coordinates (only when no preset reframes the image)
+  let painting = false;
+  const brush = e => { if (!cur) return; if ($('#preset').value !== 'none') { $('#preset').value = 'none'; render(); }
+    const b = cv.getBoundingClientRect(), x = (e.clientX - b.left) * cv.width / b.width, y = (e.clientY - b.top) * cv.height / b.height;
+    const R = +$('#bs').value * cv.width / b.width / 2, v = document.querySelector('input[name=bm]:checked').value === 'erase' ? 0 : 255, W = cur.src.width, H = cur.src.height, a = cur.alpha;
+    for (let yy = Math.max(0, y - R | 0); yy < Math.min(H, y + R); yy++) for (let xx = Math.max(0, x - R | 0); xx < Math.min(W, x + R); xx++) { const d = Math.hypot(xx - x, yy - y) / R; if (d < 1) { const k = d < 0.7 ? 1 : (1 - d) / 0.3, i = yy * W + xx; a[i] = Math.round(a[i] + (v - a[i]) * k); } }
+    render(); };
+  cv.onpointerdown = e => { if (!cur) return; undo.push(cur.alpha.slice()); if (undo.length > 15) undo.shift(); painting = true; cv.setPointerCapture(e.pointerId); brush(e); };
+  cv.onpointermove = e => { if (painting) brush(e); }; cv.onpointerup = () => { painting = false; };
+  $('#undo').onclick = () => { if (undo.length) { cur.alpha = undo.pop(); render(); } };
+  const blobOf = (c, type) => new Promise(r => c.toBlob(r, type, 0.95));
+  const save = async type => { const c = compose(cur, opts()); let src = c;
+    if (type === 'image/jpeg') { src = document.createElement('canvas'); src.width = c.width; src.height = c.height; const g = src.getContext('2d'); g.fillStyle = '#fff'; g.fillRect(0, 0, c.width, c.height); g.drawImage(c, 0, 0); }
+    const b = await blobOf(src, type); const a = document.createElement('a'); a.href = URL.createObjectURL(b); a.download = baseName({ name: cur.name }) + (type === 'image/png' ? '_cutout.png' : '_cutout.jpg'); document.body.appendChild(a); a.click(); a.remove(); };
+  $('#savePng').onclick = () => save('image/png'); $('#saveJpg').onclick = () => save('image/jpeg');
+  const run = async files => { files = files.filter(f => f.type.startsWith('image/')); if (!files.length) return out(`<p class="err">${t('needImg')}</p>`);
+    if (files.length > 1 && !isPro()) { out(`<p class="err">${t('batchPro')} <a href="#/pro">${t('proBtn')}</a></p>`); files = files.slice(0, 1); }
+    try { const m = await ensure();
+      if (files.length === 1) { const t0 = performance.now(); out(`<p>${t('processing')}</p>`); const src = await toCanvas(files[0]); let alpha; try { alpha = await B.segment(m, src); } catch (e) { if (m.device !== 'webgpu') throw e; console.warn('WebGPU run failed, retrying on CPU', e); B.disableGpu(); out(`<p>${t('processing')}</p>`); location.reload(); return; }
+        cur = { src, alpha, name: files[0].name }; undo = []; $('#ed').hidden = false; render(); out(`<p class="ok">${t('done')} (${((performance.now()-t0)/1000).toFixed(1)} s, ${src.width}×${src.height}px)</p>`); return; }
+      const JSZip = (await import('jszip')).default, zip = new JSZip(); $('#batch').hidden = false;
+      for (let i = 0; i < files.length; i++) { $('#batchMsg').textContent = `${i+1} / ${files.length}…`; const src = await toCanvas(files[i]); const item = { src, alpha: await B.segment(m, src) };
+        const c = compose(item, opts()); zip.file(baseName(files[i]) + '_cutout.png', await blobOf(c, 'image/png')); }
+      $('#batchMsg').textContent = `${t('done')} ${files.length}`; out(dlLink(await zip.generateAsync({ type: 'blob' }), 'cutouts.zip'));
+    } catch (e) { fail(e); } };
+  wireDrop('f', run);
+  window.__bg = { get cur(){ return cur; }, compose, opts, render }; // QA hook
+}
+
 /* ---------- Pro (placeholder, no payment) ---------- */
 const sha256 = async txt => [...new Uint8Array(await crypto.subtle.digest('SHA-256', new TextEncoder().encode(txt)))].map(b => b.toString(16).padStart(2, '0')).join('');
 const isPro = () => localStorage.getItem('ntpro') === PRO_CODE_HASH;
@@ -298,7 +391,7 @@ function pro(){
     if (h === PRO_CODE_HASH) { localStorage.setItem('ntpro', h); applyPro(); pro(); } else { $('#codeMsg').className = 'err'; $('#codeMsg').textContent = t('badCode'); } };
 }
 
-const ROUTES = { '': home, word: toolWord, merge: toolMerge, split: toolSplit, compress: toolCompress, img: toolImg, qr: toolQr, scan: toolScan, pro };
+const ROUTES = { '': home, word: toolWord, merge: toolMerge, split: toolSplit, compress: toolCompress, img: toolImg, qr: toolQr, scan: toolScan, bg: toolBg, pro };
 function route(){ const k = location.hash.replace(/^#\/?/, ''); (ROUTES[k] || home)(); window.scrollTo(0,0); }
 window.addEventListener('hashchange', route);
 applyLang();

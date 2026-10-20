@@ -9,12 +9,13 @@ main{max-width:820px;margin:0 auto;padding:16px}h1{font-size:clamp(1.5rem,4vw,2.
 .box{background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:14px 18px;margin:14px 0}details{margin:8px 0}summary{font-weight:600;cursor:pointer}
 .ad-slot{min-height:90px;border:1px dashed #cbd5e1;border-radius:8px;display:flex;align-items:center;justify-content:center;color:#94a3b8;font-size:.75rem;margin:16px 0}
 footer{text-align:center;color:#64748b;padding:20px;font-size:.9rem}nav.tools a{margin:0 6px;white-space:nowrap}`;
-const L = { en:{ open:'Open the free tool', how:'How to use it', feats:'Features', limits:'Honest limitations', faq:'Frequently asked questions', other:'Other free tools', home:'All tools', ad:'Advertisement', about:'About', contact:'Contact', terms:'Terms', privacy:'Privacy', switch:'العربية', priv:'Your files never leave your device.' },
+const L = { es:{ open:'Abrir la herramienta gratis', how:'Cómo usarla', feats:'Funciones', limits:'Limitaciones, con honestidad', faq:'Preguntas frecuentes', other:'Otras herramientas gratis', home:'Todas las herramientas', ad:'Publicidad', about:'Acerca de', contact:'Contacto', terms:'Términos', privacy:'Privacidad', switch:'العربية', priv:'Tus fotos nunca salen de tu dispositivo.' },
+ en:{ open:'Open the free tool', how:'How to use it', feats:'Features', limits:'Honest limitations', faq:'Frequently asked questions', other:'Other free tools', home:'All tools', ad:'Advertisement', about:'About', contact:'Contact', terms:'Terms', privacy:'Privacy', switch:'العربية', priv:'Your files never leave your device.' },
   ar:{ open:'افتح الأداة المجانية', how:'طريقة الاستخدام', feats:'المزايا', limits:'حدود الأداة بصراحة', faq:'الأسئلة الشائعة', other:'أدوات مجانية أخرى', home:'كل الأدوات', ad:'إعلان', about:'من نحن', contact:'تواصل معنا', terms:'شروط الاستخدام', privacy:'الخصوصية', switch:'English', priv:'ملفاتك لا تغادر جهازك أبدًا.' } };
-const foot = (lang, up) => `<footer><nav class="tools">${TOOLS.map(t=>`<a href="${up}${lang}/${t.slug}/">${t[lang].h1.split(/[:–,،]/)[0]}</a>`).join(' · ')}</nav><p>${L[lang].priv} · <a href="${up}about.html">${L[lang].about}</a> · <a href="${up}contact.html">${L[lang].contact}</a> · <a href="${up}terms.html">${L[lang].terms}</a> · <a href="${up}privacy.html">${L[lang].privacy}</a></p></footer>`;
+const foot = (lang, up) => `<footer><nav class="tools">${TOOLS.filter(t=>t[lang]).map(t=>`<a href="${up}${lang}/${t.slug}/">${t[lang].h1.split(/[:–,،]/)[0]}</a>`).join(' · ')}</nav><p>${L[lang].priv} · <a href="${up}about.html">${L[lang].about}</a> · <a href="${up}contact.html">${L[lang].contact}</a> · <a href="${up}terms.html">${L[lang].terms}</a> · <a href="${up}privacy.html">${L[lang].privacy}</a></p></footer>`;
 const urls = [BASE, BASE+'privacy.html', BASE+'about.html', BASE+'contact.html', BASE+'terms.html'];
-for (const t of TOOLS) for (const lang of ['en','ar']) {
-  const c = t[lang], other = lang==='en'?'ar':'en', url = `${BASE}${lang}/${t.slug}/`; urls.push(url);
+for (const t of TOOLS) for (const lang of ['en','ar','es'].filter(l => t[l])) {
+  const c = t[lang], other = lang==='ar'?'en':'ar', url = `${BASE}${lang}/${t.slug}/`; urls.push(url);
   const ld = [{ '@context':'https://schema.org', '@type':'WebApplication', name:c.h1, url, applicationCategory:'UtilitiesApplication', operatingSystem:'Any (web browser)', inLanguage:lang, offers:{ '@type':'Offer', price:'0', priceCurrency:'USD' }, description:c.desc },
     { '@context':'https://schema.org', '@type':'FAQPage', mainEntity:c.faq.map(([q,a])=>({ '@type':'Question', name:q, acceptedAnswer:{ '@type':'Answer', text:a } })) },
     { '@context':'https://schema.org', '@type':'HowTo', name:c.h1, step:c.steps.map((s,i)=>({ '@type':'HowToStep', position:i+1, text:s })) },
@@ -22,7 +23,7 @@ for (const t of TOOLS) for (const lang of ['en','ar']) {
   const app = `../../index.html?lang=${lang}#/${t.route}`;
   const html = `<!doctype html><html lang="${lang}" dir="${lang==='ar'?'rtl':'ltr'}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>${esc(c.title)}</title><meta name="description" content="${esc(c.desc)}"><link rel="canonical" href="${url}">
-<link rel="alternate" hreflang="${lang}" href="${url}"><link rel="alternate" hreflang="${other}" href="${BASE}${other}/${t.slug}/"><link rel="alternate" hreflang="x-default" href="${BASE}en/${t.slug}/">
+${["en","ar","es"].filter(l=>t[l]).map(l=>`<link rel="alternate" hreflang="${l}" href="${BASE}${l}/${t.slug}/">`).join("")}<link rel="alternate" hreflang="x-default" href="${BASE}en/${t.slug}/">
 <meta property="og:title" content="${esc(c.title)}"><meta property="og:description" content="${esc(c.desc)}"><meta property="og:url" content="${url}"><meta property="og:type" content="website"><meta name="twitter:card" content="summary">
 <meta name="theme-color" content="#0f766e"><style>${CSS}</style>${PROJS}
 ${ld.map(o=>`<script type="application/ld+json">${JSON.stringify(o)}</script>`).join('\n')}</head><body>
@@ -34,7 +35,7 @@ ${ld.map(o=>`<script type="application/ld+json">${JSON.stringify(o)}</script>`).
 <section class="box"><h2>${L[lang].limits}</h2><p>${c.limits}</p></section>
 <section><h2>${L[lang].faq}</h2>${c.faq.map(([q,a])=>`<details open><summary>${q}</summary><p>${a}</p></details>`).join('')}</section>
 <p><a class="cta" href="${app}">${L[lang].open} →</a></p><div class="ad-slot" data-ad-slot="landing-bottom">${L[lang].ad}</div>
-<h2>${L[lang].other}</h2><ul>${TOOLS.filter(x=>x!==t).map(x=>`<li><a href="../${x.slug}/">${x[lang].h1}</a></li>`).join('')}</ul></main>${foot(lang,'../../')}</body></html>`;
+<h2>${L[lang].other}</h2><ul>${TOOLS.filter(x=>x!==t&&x[lang]).map(x=>`<li><a href="../${x.slug}/">${x[lang].h1}</a></li>`).join('')}</ul></main>${foot(lang,'../../')}</body></html>`;
   fs.mkdirSync(`${out}/${lang}/${t.slug}`, { recursive:true }); fs.writeFileSync(`${out}/${lang}/${t.slug}/index.html`, html);
 }
 const simple = (file, enT, enBody, arT, arBody) => fs.writeFileSync(`${out}/${file}`, `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${enT} – No-Tricks Tools</title><meta name="description" content="${enT} – No-Tricks Tools: free private PDF tools and QR codes that never expire."><link rel="canonical" href="${BASE}${file}"><style>${CSS}</style></head><body><header><a href="./">No-Tricks Tools</a></header><main><h1>${enT}</h1>${enBody}<hr><div dir="rtl" lang="ar"><h1>${arT}</h1>${arBody}</div></main>${foot('en','')}</body></html>`);
